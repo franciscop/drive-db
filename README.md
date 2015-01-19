@@ -8,11 +8,10 @@ A Google Drive spreadsheet simple database. Stop wasting your time when a simple
 
 The database is stored locally and updated when you want from the spreadsheet. Easy to use:
 
-    // Include the module
-    // We can pass .load() a non-default cachePath (default is "db.json")
+    // Include the module and load the data from the default location
     var drive = require("drive-db").load();
 
-    // Retrieve all the Johns
+    // Retrieve all the people named `John`
     var Johns = drive.find({ firstname: "John" });
 
 
