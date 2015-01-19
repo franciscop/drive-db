@@ -66,6 +66,14 @@ The different configurations that can be loaded for drive:
     // The remote spreadsheet to load. No default
     drive.url = "";
 
+    // The path where the local cache is stored
+    drive.cachePath = "db.json";
+
+    // Function to call just after `updateCache()` is called. Nice for formatting data
+    drive.after = function(){
+      this.saveCache();
+      };
+
 
 ## Test
 
