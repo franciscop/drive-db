@@ -66,14 +66,17 @@ To get the right google drive spreadsheet:
 
 The different configurations that can be loaded for drive:
 
-    // The remote spreadsheet to load. No default
-    drive.url = "";
+    // The remote spreadsheet to load. Use the one obtained previously
+    drive.url = "https://spreadsheets.google.com/feeds/list/1fvz34wY6phWDJsuIneqvOoZRPfo6CfJyPg1BYgHt59k/od6/public/values?alt=json";
 
     // The path where the local cache is stored
     drive.cachePath = "db.json";
 
     // Function to call just after `updateCache()` is called. Nice for formatting data
     drive.after = function(){
+      this.data.forEach(function(value, index)){
+        this.data[index].img = "img/" + value.img;
+        }
       this.saveCache();
       };
 
