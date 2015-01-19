@@ -70,6 +70,7 @@ Areas where I'm seeking for help:
 
 ## Release history
 
+- 1.1.0 Changed the parameter inside `load()`. Now it's the file where the cache is stored.
 - 1.0.0 First release
 
 
