@@ -1,5 +1,5 @@
 # drive-db
-A Google Drive spreadsheet simple database
+A Google Drive spreadsheet simple database. Stop wasting your time when a simple table is enough. Perfect for collaboration with multiple people editing the same table.
 
 ## Install it
 
@@ -11,7 +11,10 @@ To install it within your node.js application, simply do:
 
 The database is stored locally and updated when you want from the spreadsheet. Easy to use:
 
+    // Include the module
     var drive = require("drive-db");
+
+    // The remote spreadsheet to load. No default
     drive.url = "https://spreadsheets.google.com/feeds/list/1BfDC-ryuqahvAVKFpu21KytkBWsFDSV4clNex4F1AXc/od6/public/values?alt=json";
 
     // Load the local data
@@ -30,7 +33,7 @@ The database is stored locally and updated when you want from the spreadsheet. E
 
 The different configurations that can be loaded for drive:
 
-    // The remote spreadsheet to load. Defaults to none
+    // The remote spreadsheet to load. No default
     drive.url = "";
 
     // Where to cache the data. Defaults to "db.json"
