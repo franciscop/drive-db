@@ -1,0 +1,34 @@
+{
+  "name": "drive-db",
+  "version": "1.0.0",
+  "description": "A simple google drive spreadsheet database",
+  "main": "index.js",
+  "scripts": {
+    "test": "make test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/FranciscoP/drive-db.git"
+  },
+  "keywords": [
+    "google",
+    "drive",
+    "database",
+    "db",
+    "table",
+    "spreadsheet"
+  ],
+  "author": "Francisco Presencia Fandos",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/FranciscoP/drive-db/issues"
+  },
+  "homepage": "https://github.com/FranciscoP/drive-db",
+  "dependencies": {
+    "request": "^2.51.0"
+  },
+  "devDependencies": {
+    "chai": "^1.10.0",
+    "mocha": "^2.1.0"
+  }
+}
