@@ -50,12 +50,15 @@ To get the right google drive spreadsheet:
 - File > Publish to the Web > Publish
 - Copy the part between `/spreadsheets/` and `/edit` in the url. For this:
     
-    https://docs.google.com/spreadsheets/d/1fvz34wY6phWDJsuIneqvOoZRPfo6CfJyPg1BYgHt59k/edit#gid=0
+    > https://docs.google.com/spreadsheets/d/1fvz34wY6phWDJsuIneqvOoZRPfo6CfJyPg1BYgHt59k/edit#gid=0
+    
     You get this ID:
-    1fvz34wY6phWDJsuIneqvOoZRPfo6CfJyPg1BYgHt59k
+    
+    > 1fvz34wY6phWDJsuIneqvOoZRPfo6CfJyPg1BYgHt59k
 
 - Use this url for `drive.url` changing `YOUR-ID-HERE` for the code above:
-    https://spreadsheets.google.com/feeds/list/YOUR-ID-HERE/od6/public/values?alt=json
+    
+    > https://spreadsheets.google.com/feeds/list/YOUR-ID-HERE/od6/public/values?alt=json
 
 
 
