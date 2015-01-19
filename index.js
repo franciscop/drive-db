@@ -8,7 +8,9 @@ var request = require('request');
  * Use a Google Drive sheet as a database for a web
  * TODO: cache the calls
  */
-var drive = function (){};
+var drive = function (){
+	this.load();
+	};
 
 
 
@@ -51,7 +53,10 @@ drive.prototype.load = function(callback){
 	this.info = db.info;
 
 	// Load the callback
-	callback.call(this, this);
+	if (callback)
+		callback.call(this, this);
+
+	return this;
 	};
 
 

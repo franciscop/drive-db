@@ -12,18 +12,14 @@ To install it within your node.js application, simply do:
 The database is stored locally and updated when you want from the spreadsheet. Easy to use:
 
     // Include the module
-    var drive = require("drive-db");
+    // We can .load() it since we're using the default cacheFile
+    var drive = require("drive-db").load();
 
-    // The remote spreadsheet to load. No default
+    var Johns = drive.find({ firstname: "John" });
+
+    // The spreadsheet to retrieve. Set it before updateCache()
     drive.url = "https://spreadsheets.google.com/feeds/list/1BfDC-ryuqahvAVKFpu21KytkBWsFDSV4clNex4F1AXc/od6/public/values?alt=json";
-
-    // Load the local data
-    drive.load(function(db){
-
-      // Retrieve everyone called "John"
-      var Johns = db.find({ firstname: "John" });
-      });
-
+    
     // Update the local data (async)
     drive.updateCache();
 

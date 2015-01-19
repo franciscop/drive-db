@@ -1,34 +1,35 @@
 var should = require('chai').should(),
     drive = require('../index');
 
-// Load the right file
-drive.url = "https://spreadsheets.google.com/feeds/list/1BfDC-ryuqahvAVKFpu21KytkBWsFDSV4clNex4F1AXc/od6/public/values?alt=json";
-
 
 
 // Load the DB from drive (local)
 describe('drive.load(callback)', function(){
 
   // Make sure there's DB
-  it('should load the db', function(done){
-    drive.load(function(DB){
-      // There's something
-      if (!DB)
-        throw "No database given";
+  it('should load the db', function(){
+    
+    // Load the data
+    drive.load();
+      
+    // There's something
+    if (!drive)
+      throw "No database given";
 
-      // It's an object
-      if (typeof DB !== "object")
-        throw "DB should be an object";
+    // It's an object
+    if (typeof drive !== "object")
+      throw "DB should be an object";
 
-      // It's the right object
-      if (!(DB instanceof drive.constructor))
-        throw "DB should be an instance of drive";
-      done();
-      });
+    // It's the right object
+    if (!(drive instanceof drive.constructor))
+      throw "DB should be an instance of drive";
     });
   });
 
 
+
+// Load the right file
+drive.url = "https://spreadsheets.google.com/feeds/list/1BfDC-ryuqahvAVKFpu21KytkBWsFDSV4clNex4F1AXc/od6/public/values?alt=json";
 
 // Attempt to update the cache
 describe('drive.updateCache(callback)', function(){
@@ -43,23 +44,20 @@ describe('drive.updateCache(callback)', function(){
       done();
       });
     });
-
+  
   // Check on the retrieved data
-  after(function(done){
+  after(function(){
 
     // Retrieve the spreadsheet
-    drive.load(function(DB){
+    drive.load();
 
-      // Make sure we have some info
-      if (DB.info.length === 0)
-        throw "No info stored";
+    // Make sure we have some info
+    if (drive.info.length === 0)
+      throw "No info stored";
 
-      // Make sure there's something returned
-      if (DB.data.length === 0)
-        throw "No data loaded";
-
-      done();
-      });
+    // Make sure there's something returned
+    if (drive.data.length === 0)
+      throw "No data loaded";
     });
   });
 
@@ -69,13 +67,12 @@ describe('drive.updateCache(callback)', function(){
 describe('drive.find()', function(){
 
   // Retrieve the spreadsheet
-  drive.load(function(drive){
+  drive.load();
 
-    // Retrieve the spreadsheet
-    it('should load all records', function(){
-      if (drive.find().length !== 6)
-        throw "Not all records were retrieved";
-      });
+  // Retrieve the spreadsheet
+  it('should load all records', function(){
+    if (drive.find().length !== 6)
+      throw "Not all records were retrieved";
     });
   });
 
