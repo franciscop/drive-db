@@ -66,7 +66,7 @@ describe('drive.updateCache(callback)', function(){
 
 
 // Attempt to update the cache
-describe('drive.find(filter)', function(){
+describe('drive.find()', function(){
 
   // Retrieve the spreadsheet
   drive.load(function(drive){
@@ -76,23 +76,52 @@ describe('drive.find(filter)', function(){
       if (drive.find().length !== 6)
         throw "Not all records were retrieved";
       });
+    });
+  });
+
+
+
+// Attempt to update the cache
+describe('drive.find(filter)', function(){
+
+  // Retrieve the spreadsheet
+  drive.load(function(drive){
 
     // Retrieve the spreadsheet
-    it('should load one record', function(){
+    it('should load first record', function(){
       if (drive.find({ id: 1 }).length !== 1)
         throw "Only one record should be found";
       });
 
     // Retrieve the spreadsheet
-    it('should load records with id > 4', function(){
-      var records = drive.find({ id: {$gt: 4} });
-      records.forEach(function(row){
-        if (row.id <= 4)
-          throw "Only records with ID bigger than 4 expected"
-        });
+    it('should load John record', function(){
+      if (drive.find({ firstname: "John" }).length !== 1)
+        throw "Only one record should be found";
       });
 
+    // Retrieve the spreadsheet
+    it('should load Miller record', function(){
+      if (drive.find({ lastname: "Miller" }).length !== 1)
+        throw "Only one record should be found";
+      });
+    });
+  });
 
+
+
+// Attempt to update the cache
+describe('drive.find(complexfilter)', function(){
+
+  // Retrieve the spreadsheet
+  drive.load(function(drive){
+
+    // Retrieve the spreadsheet
+    it('should load records with id > 4', function(){
+      var records = drive.find({ id: {$gt: 4} });
+      var none = records.filter(function(row){ return row.id <= 4; });
+      if (none.length > 0)
+        throw "There's some record smaller than 4";
+      });
     });
   });
 
