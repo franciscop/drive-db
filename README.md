@@ -25,7 +25,7 @@ To update the data async, you should call this. Update it whenever you want, aft
     // Update the local data (async)
     drive.updateCache();
 
-Also perform `find()` queries like mongoDB's [comparison query operators](http://docs.mongodb.org/manual/reference/operator/query-comparison/). They are compatible:
+Then you can perform `find()` queries like mongoDB's [comparison query operators](http://docs.mongodb.org/manual/reference/operator/query-comparison/). They are compatible:
 
     var drive = require("drive-db").load();
 
@@ -44,7 +44,7 @@ Also perform `find()` queries like mongoDB's [comparison query operators](http:/
 
     npm install drive-db --save
 
-For the google drive spreadsheet:
+To get the right google drive spreadsheet:
 
 - Create it
 - File > Publish to the Web > Publish
