@@ -60,6 +60,10 @@ To get the right google drive spreadsheet:
     
     > https://spreadsheets.google.com/feeds/list/YOUR-ID-HERE/od6/public/values?alt=json
 
+    So you get this final url:
+
+    > https://spreadsheets.google.com/feeds/list/1fvz34wY6phWDJsuIneqvOoZRPfo6CfJyPg1BYgHt59k/od6/public/values?alt=json
+
 
 
 ## Options
