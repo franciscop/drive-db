@@ -69,34 +69,30 @@ describe('drive.updateCache(callback)', function(){
 describe('drive.find(filter)', function(){
 
   // Retrieve the spreadsheet
-  it('should load filtered records', function(){
+  drive.load(function(drive){
 
     // Retrieve the spreadsheet
-    drive.load(function(drive){
+    it('should load all records', function(){
       if (drive.find().length !== 6)
         throw "Not all records were retrieved";
+      });
 
+    // Retrieve the spreadsheet
+    it('should load one record', function(){
       if (drive.find({ id: 1 }).length !== 1)
         throw "Only one record should be found";
       });
-    });
-  
-  // Check on the retrieved data
-  after(function(done){
 
     // Retrieve the spreadsheet
-    drive.load(function(DB){
-
-      // Make sure we have some info
-      if (DB.info.length === 0)
-        throw "No info stored";
-
-      // Make sure there's something returned
-      if (DB.data.length === 0)
-        throw "No data loaded";
-
-      done();
+    it('should load records with id > 4', function(){
+      var records = drive.find({ id: {$gt: 4} });
+      records.forEach(function(row){
+        if (row.id <= 4)
+          throw "Only records with ID bigger than 4 expected"
+        });
       });
+
+
     });
   });
 
