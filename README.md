@@ -10,7 +10,7 @@ A Google Drive spreadsheet simple database. Stop wasting your time when a simple
 The database is stored locally and updated when you want from the spreadsheet. Easy to use:
 
     // Include the module
-    // We can .load() it if we're using the default cachePath
+    // We can pass .load() a non-default cachePath (default is "db.json")
     var drive = require("drive-db").load();
 
     // Retrieve all the Johns
