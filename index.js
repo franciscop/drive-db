@@ -35,7 +35,10 @@ drive.prototype.cachePath = "db.json";
  * @param String url the google drive sheet url
  * @param function callback the function to call when the data is loaded
  */
-drive.prototype.load = function(callback){
+drive.prototype.load = function(cachePath){
+
+	if (cachePath)
+		this.cachePath = cachePath;
 
 	// If there's no local DB
 	if(!fs.existsSync(this.cachePath)) {
@@ -51,10 +54,6 @@ drive.prototype.load = function(callback){
 	var db = JSON.parse(rawJson);
 	this.data = db.data;
 	this.info = db.info;
-
-	// Load the callback
-	if (callback)
-		callback.call(this, this);
 
 	return this;
 	};

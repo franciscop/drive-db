@@ -31,8 +31,8 @@ Also perform `find()` queries like mongoDB's [comparison query operators](http:/
 
     var drive = require("drive-db").load();
 
-    // Return a list where the ids are greater than 3
-    drive.find({ id: { $gt: 3 } });
+    // Return a list with one element with the id 3
+    drive.find({ id: 3 });  
 
     // Return a list where the firstnames are "John" or "Jack"
     drive.find({ firstname: { $in: ["John", "Jack"]] } });
@@ -52,6 +52,25 @@ The different configurations that can be loaded for drive:
     drive.cachePath = "db.json";
 
 
+## Test
+
+    npm test
+
+## Contributing
+
+In lieu of a formal styleguide, take care to maintain the existing coding style.
+Add unit tests for any new or changed functionality. Lint and test your code.
+
+Areas where I'm seeking for help:
+
+- Coverage of tests
+- Documentation
+- Testing it
+
+
+## Release history
+
+- 1.0.0 First release
 
 
 npm module created following this guide: https://quickleft.com/blog/creating-and-publishing-a-node-js-module/
