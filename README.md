@@ -48,15 +48,11 @@ To get the right google drive spreadsheet:
 
 - Create it
 - File > Publish to the Web > Publish
-- Copy the part between `/spreadsheets/` and `/edit` in the url. For this:
+- Copy the id between `/spreadsheets/` and `/edit` in the url:
     
-    > https://docs.google.com/spreadsheets/d/1fvz34wY6phWDJsuIneqvOoZRPfo6CfJyPg1BYgHt59k/edit#gid=0
-    
-    You get this ID:
-    
-    > 1fvz34wY6phWDJsuIneqvOoZRPfo6CfJyPg1BYgHt59k
+    [https://docs.google.com/spreadsheets/d/<strong>1fvz34wY6phWDJsuIneqvOoZRPfo6CfJyPg1BYgHt59k</strong>/edit#gid=0](https://docs.google.com/spreadsheets/d/1fvz34wY6phWDJsuIneqvOoZRPfo6CfJyPg1BYgHt59k/edit#gid=0)
 
-- Use this url for `drive.url` changing `YOUR-ID-HERE` for the code above:
+- Use this url for `drive.url` changing `YOUR-ID-HERE` for the code obtained previously:
     
     > https://spreadsheets.google.com/feeds/list/YOUR-ID-HERE/od6/public/values?alt=json
 
