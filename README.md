@@ -8,7 +8,7 @@ A Google Drive spreadsheet simple database. Stop wasting your time when a simple
 
 The database is stored locally and updated when you want from the spreadsheet. Easy to use:
 
-    // Include the module and load the data from the default location
+    // Include the module and load the data from the default local cache
     var drive = require("drive-db").load();
 
     // Retrieve all the people named `John`
