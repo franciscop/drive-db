@@ -81,6 +81,13 @@ The different configurations that can be loaded for drive:
       };
 
 
+
+## Discuss
+
+On **[Hacker News](https://news.ycombinator.com/item?id=8914508)** or in *issues* if you have any.
+
+
+
 ## Test
 
     npm test
