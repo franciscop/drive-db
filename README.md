@@ -1,9 +1,8 @@
 # drive-db
+
 A Google Drive spreadsheet simple database. Stop wasting your time when a simple table is enough. Perfect for collaboration with multiple people editing the same table.
 
-## Installation
 
-    npm install drive-db --save
 
 ## Usage
 
@@ -41,15 +40,32 @@ Also perform `find()` queries like mongoDB's [comparison query operators](http:/
     drive.find({ firstname: { $ne: "John" } });
 
 
+
+## Installation
+
+    npm install drive-db --save
+
+For the google drive spreadsheet:
+
+- Create it
+- File > Publish to the Web > Publish
+- Copy the part between `/spreadsheets/` and `/edit` in the url. For this:
+    
+    https://docs.google.com/spreadsheets/d/1fvz34wY6phWDJsuIneqvOoZRPfo6CfJyPg1BYgHt59k/edit#gid=0
+    You get this ID:
+    1fvz34wY6phWDJsuIneqvOoZRPfo6CfJyPg1BYgHt59k
+
+- Use this url for `drive.url` changing `YOUR-ID-HERE` for the code above:
+    https://spreadsheets.google.com/feeds/list/YOUR-ID-HERE/od6/public/values?alt=json
+
+
+
 ## Options
 
 The different configurations that can be loaded for drive:
 
     // The remote spreadsheet to load. No default
     drive.url = "";
-
-    // Where to cache the data. Defaults to "db.json"
-    drive.cachePath = "db.json";
 
 
 ## Test
