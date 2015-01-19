@@ -19,7 +19,6 @@ The database is stored locally and updated when you want from the spreadsheet. E
 
       // Retrieve everyone called "John"
       var Johns = db.find({ firstname: "John" });
-
       });
 
     // Update the local data (async)
