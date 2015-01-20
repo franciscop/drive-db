@@ -1,16 +1,14 @@
-	// Required modules
+// Required modules
 var fs = require('fs');
 var request = require('request');
 
 
+
 /**
  * Drive Model
- * Use a Google Drive sheet as a database for a web
- * TODO: cache the calls
+ * Use a Google Drive sheet as a database with strong cache
  */
-var drive = function (){
-	this.load();
-	};
+var drive = function (){};
 
 
 
@@ -31,24 +29,24 @@ drive.prototype.cachePath = "db.json";
 
 
 /**
- * Load external drive sheet
- * @param String url the google drive sheet url
- * @param function callback the function to call when the data is loaded
+ * Load
+ * Retrieve the data from the local copy
+ * @param String cachePath the place where the local copy is stored
  */
 drive.prototype.load = function(cachePath){
 
-	if (cachePath)
-		this.cachePath = cachePath;
+	// Set the cachePath
+	this.cachePath = cachePath ? cachePath : this.cachePath;
 
 	// If there's no local DB
 	if(!fs.existsSync(this.cachePath)) {
 		
 		// Initialize the DB
-		this.initDB();
+		this.init();
 		}
 	
 	// Read the raw db into a variable
-	var rawJson = fs.readFileSync(this.cachePath).toString();
+	var rawJson = fs.readFileSync(this.cachePath, "utf-8");
 
 	// Store it in a decent way
 	var db = JSON.parse(rawJson);
@@ -61,58 +59,57 @@ drive.prototype.load = function(cachePath){
 
 
 /**
- * Create and load the db
+ * Update
+ * Refresh the Google Spreadsheet data into local database
  */
-drive.prototype.initDB = function(){
+drive.prototype.update = function(id, callback){
 
-	fs.writeFileSync(this.cachePath, JSON.stringify({
-		information: "",
-		data: []
-		}));
-	};
+	// Store the url from google drive
+	this.url = "https://spreadsheets.google.com/feeds/list/" + id + "/od6/public/values?alt=json";
 
+	var self = this;
 
+	// Call request() but keep this as `drive`
+	request(this.url, function(error, code, sheet){
 
-/**
- * Update the cached data
- */
-drive.prototype.updateCache = function(callback){
+		if (error)
+			return false;
 
-	// Store the variable locally
-	var drive = this;
+		self.data = self.parse(sheet);
 
-	// Attempt to load Google Drive data
-	request(drive.url, function(error, code, sheet){
+		if (callback)
+			callback.call(self, self.data);
 
-		// If google drive could be loaded
-		// File was loaded successfully
-		if (!error) {
-
-			// Parse the data loaded
-			drive.data = drive.parse(sheet);
-			
-			// Modify it before saving it
-			if (callback)
-				callback.call(drive, drive.data);
-
-			drive.saveCache();
-			}
+		self.store();
 		});
 	};
 
 
 
 /**
- * Save cache
- * Actually save it into cache
+ * Init
+ * Create an empty, local copy for the database
  */
-drive.prototype.saveCache = function(){
+drive.prototype.init = function(){
 
+	// The default, empty database
+	var json = JSON.stringify({ information: {}, data: [] });
+
+	// Write it to the correct file
+	fs.writeFileSync(this.cachePath, json);
+	};
+
+
+
+/**
+ * Store
+ * Save the current data into the db
+ */
+drive.prototype.store = function(){
+
+	// The data to store
 	var save = JSON.stringify({
-		info: {
-			name: "Database",
-			updated: new Date().getTime()
-			},
+		info: { updated: new Date().getTime() },
 		data: this.data
 		}, null, 2);
 

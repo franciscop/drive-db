@@ -27,18 +27,14 @@ describe('drive.load(callback)', function(){
   });
 
 
-
-// Load the right file
-drive.url = "https://spreadsheets.google.com/feeds/list/1BfDC-ryuqahvAVKFpu21KytkBWsFDSV4clNex4F1AXc/od6/public/values?alt=json";
-
 // Attempt to update the cache
-describe('drive.updateCache(callback)', function(){
+describe('drive.update(id, callback)', function(){
 
   // Retrieve the spreadsheet
   it('should update the db', function(done){
 
     // Retrieve the spreadsheet
-    drive.updateCache(function(){
+    drive.update("1BfDC-ryuqahvAVKFpu21KytkBWsFDSV4clNex4F1AXc", function(){
       if (this.data.length === 0)
         throw "No data loaded";
       done();
