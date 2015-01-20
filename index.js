@@ -8,9 +8,7 @@ var request = require('request');
  * Drive Model
  * Use a Google Drive sheet as a database with strong cache
  */
-var drive = function (){
-	this.load();
-	};
+var drive = function (){};
 
 
 
@@ -83,11 +81,12 @@ drive.prototype.load = function(cachePath){
 /**
  * Update
  * Refresh the Google Spreadsheet data into local database
+ * @param id Google Drive Spreadsheet id
+ * @param callback the function to call after the data is retrieved
  */
 drive.prototype.update = function(id, callback){
 
-	if (callback)
-		this.after = callback;
+	this.after = callback ? callback : this.after;
 
 	// Store the url from google drive
 	if (id)
@@ -104,14 +103,24 @@ drive.prototype.update = function(id, callback){
 		if (error)
 			return false;
 
+		// So that you can access this within self.after
 		self.data = self.parse(sheet);
 
-		if (self.after)
-			self.after.call(self, self.data);
+		self.data = self.after.call(self, self.data);
 
 		self.store();
 		});
 	};
+
+
+
+/**
+ * After
+ * The function to call to process the data
+ */
+drive.prototype.after = function(data){
+	return data;
+	}
 
 
 

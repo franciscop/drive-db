@@ -37,31 +37,31 @@ However, if you have more than one table or you just want to put it in a differe
 
     drive.load('db/drive.json');
 
-Note that, if you call `.load(filename)` and the file doesn't exist yet, it will be created.
 
 
-
-## .update(id[, callback])
+## .update(id[, afterupdate])
 
 Retrieves the google drive spreadsheet asynchronously, process it and store it locally. It needs at least the google drive id as first parameter, and it accepts a callback that will be processed afterwards. An example:
 
-    drive.update("1BfDC-ryuqahvAVKFpu21KytkBWsFDSV4clNex4F1AXc");
+    drive.update("1fvz34wY6phWDJsuIneqvOoZRPfo6CfJyPg1BYgHt59k");
 
 Another example:
 
     drive.update("1BfDC-ryuqahvAVKFpu21KytkBWsFDSV4clNex4F1AXc", function(data){
       console.log("There are " + data.length + " rows");
+      return data;
       });
 
 Yet another one:
 
-    drive.update("1BfDC-ryuqahvAVKFpu21KytkBWsFDSV4clNex4F1AXc", function(data){
+    drive.update("1fvz34wY6phWDJsuIneqvOoZRPfo6CfJyPg1BYgHt59k", function(data){
       data.forEach(function(row){
         row.fullname = row.firstname + " " + row.lastname;
         });
-      this.data = data;
+      return data;
       });
 
+Note that, if you call `.update(id)` and the file doesn't exist yet, it will be created.
 
 
 ## .find([filter])
@@ -74,11 +74,13 @@ Retrieve data from the database. If there's no filter, the whole spreadsheet wil
 
 > This is tested only informally, but no formal test have been written yet. It does seem to work, but further testing is required. This might change soon (see note in `.limit()`)
 
-Sort the data by the given field. It sorts it in an ascendant order. Pass a second parameter as true and it will sor it in a descendant order. It should be called **before** `.find()`. Examples:
+Sort the data by the given field. It sorts it in an ascendant order. Pass a second parameter as true and it will sort it in a descendant order. It should be called **before** `.find()`. Examples:
 
+    // Ascendant order
     var people = drive.sort('firstname').find();
 
-    var inversepeople = drive.sort('firstname', desc).find();
+    // Descedant order
+    var inversepeople = drive.sort('firstname', true).find();
 
     var smiths = drive.sort('firstname').find({ lastname: "Smith" });
 

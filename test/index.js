@@ -2,27 +2,51 @@ var should = require('chai').should(),
     drive = require('../index');
 
 
+// Check if the passed object is a drive instance or not
+function checkDrive(obj) {
+
+  // There's something
+  if (!drive)
+    throw "No database given";
+
+  // It's an object
+  if (typeof drive !== "object")
+    throw "DB should be an object";
+
+  // It's the right object
+  if (!(drive instanceof drive.constructor))
+    throw "DB should be an instance of drive";
+  }
+
 
 // Load the DB from drive (local)
 describe('drive.load(callback)', function(){
 
   // Make sure there's DB
-  it('should load the db', function(){
+  it('load db without location', function(){
     
     // Load the data
     drive.load();
-      
-    // There's something
-    if (!drive)
-      throw "No database given";
 
-    // It's an object
-    if (typeof drive !== "object")
-      throw "DB should be an object";
+    checkDrive(drive);
+    });
 
-    // It's the right object
-    if (!(drive instanceof drive.constructor))
-      throw "DB should be an instance of drive";
+  // Make sure there's DB
+  it('load database default location', function(){
+    
+    // Load the data
+    drive.load('db.json');
+
+    checkDrive(drive);
+    });
+
+  // Make sure there's DB
+  it('load database non-default location', function(){
+    
+    // Load the data
+    drive.load('database.json');
+
+    checkDrive(drive);
     });
   });
 
@@ -35,9 +59,10 @@ describe('drive.update(id, callback)', function(){
 
     // Retrieve the spreadsheet
     drive.update("1BfDC-ryuqahvAVKFpu21KytkBWsFDSV4clNex4F1AXc", function(data){
-      if (this.data.length === 0)
-        throw "No data loaded";
       done();
+      if (this. data.length === 0)
+        throw "No data loaded";
+      return data;
       });
     });
   
