@@ -6,7 +6,7 @@ A Google Drive spreadsheet simple database. Stop wasting your time when a simple
 
 ## Usage
 
-The database is stored locally and updated when you want from the spreadsheet. Easy to use:
+The database is stored locally and updated when you want from the spreadsheet. For more information read documentation.md, but it's really easy to use:
 
     // Include the module and load the data from the default local cache
     var drive = require("drive-db").load();
@@ -18,12 +18,9 @@ The database is stored locally and updated when you want from the spreadsheet. E
 To update the data async, you should call this. Update it whenever you want, after the .load() or once each X seconds/minutes:
 
     var drive = require("drive-db").load();
-
-    // The spreadsheet to retrieve. Set it before updateCache()
-    drive.url = "https://spreadsheets.google.com/feeds/list/1BfDC-ryuqahvAVKFpu21KytkBWsFDSV4clNex4F1AXc/od6/public/values?alt=json";
     
     // Update the local data (async)
-    drive.updateCache();
+    drive.update("1BfDC-ryuqahvAVKFpu21KytkBWsFDSV4clNex4F1AXc");
 
 Then you can perform `find()` queries like mongoDB's [comparison query operators](http://docs.mongodb.org/manual/reference/operator/query-comparison/). They are compatible:
 
@@ -52,13 +49,9 @@ To get the right google drive spreadsheet:
     
     > [https://docs.google.com/spreadsheets/d/<strong>1fvz34wY6phWDJsuIneqvOoZRPfo6CfJyPg1BYgHt59k</strong>/edit#gid=0](https://docs.google.com/spreadsheets/d/1fvz34wY6phWDJsuIneqvOoZRPfo6CfJyPg1BYgHt59k/edit#gid=0)
 
-- Use this url for `drive.url` changing `YOUR-ID-HERE` for the code obtained previously:
+- Use this inside `update()`
     
-    > https://spreadsheets.google.com/feeds/list/YOUR-ID-HERE/od6/public/values?alt=json
-
-    So you get this final url:
-
-    > https://spreadsheets.google.com/feeds/list/1fvz34wY6phWDJsuIneqvOoZRPfo6CfJyPg1BYgHt59k/od6/public/values?alt=json
+    drive.update("1fvz34wY6phWDJsuIneqvOoZRPfo6CfJyPg1BYgHt59k");
 
 
 
@@ -66,13 +59,13 @@ To get the right google drive spreadsheet:
 
 The different configurations that can be loaded for drive:
 
-    // The remote spreadsheet to load. Use the one obtained previously
+    // The full, remote spreadsheet to load. Use the one obtained previously
     drive.url = "https://spreadsheets.google.com/feeds/list/1fvz34wY6phWDJsuIneqvOoZRPfo6CfJyPg1BYgHt59k/od6/public/values?alt=json";
 
     // The path where the local cache is stored
     drive.cachePath = "db.json";
 
-    // Function to call just after `updateCache()` is called. Nice for formatting data
+    // Function to call just after `update()` is called. Nice for formatting data
     drive.after = function(){
       this.data.forEach(function(value, index)){
         this.data[index].img = "img/" + value.img;
@@ -106,6 +99,7 @@ Areas where I'm seeking for help:
 
 ## Release history
 
+- 1.2.0 Changed several things. Created `documentation.md`, which should be up to date to keep up with the changes.
 - 1.1.0 Changed the parameter inside `load()`. Now it's the file where the cache is stored.
 - 1.0.0 First release
 

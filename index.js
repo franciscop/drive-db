@@ -8,7 +8,9 @@ var request = require('request');
  * Drive Model
  * Use a Google Drive sheet as a database with strong cache
  */
-var drive = function (){};
+var drive = function (){
+	this.load();
+	};
 
 
 
@@ -29,6 +31,22 @@ drive.prototype.cachePath = "db.json";
 
 
 /**
+ * Info
+ * Variable that contains the database information
+ */
+drive.prototype.info = {};
+
+
+
+/**
+ * Data
+ * This variable will contain the database data
+ */
+drive.prototype.data = [];
+
+
+
+/**
  * Load
  * Retrieve the data from the local copy
  * @param String cachePath the place where the local copy is stored
@@ -40,18 +58,22 @@ drive.prototype.load = function(cachePath){
 
 	// If there's no local DB
 	if(!fs.existsSync(this.cachePath)) {
-		
-		// Initialize the DB
-		this.init();
+		return this;
 		}
 	
 	// Read the raw db into a variable
 	var rawJson = fs.readFileSync(this.cachePath, "utf-8");
 
 	// Store it in a decent way
-	var db = JSON.parse(rawJson);
-	this.data = db.data;
-	this.info = db.info;
+	try {
+		var db = JSON.parse(rawJson);
+		this.data = db.data;
+		this.info = db.info;
+		}
+	catch(error) {
+		console.log("Error reading from local db. Current values:");
+		console.log(rawJson);
+		}
 
 	return this;
 	};
@@ -64,8 +86,15 @@ drive.prototype.load = function(cachePath){
  */
 drive.prototype.update = function(id, callback){
 
+	if (callback)
+		this.after = callback;
+
 	// Store the url from google drive
-	this.url = "https://spreadsheets.google.com/feeds/list/" + id + "/od6/public/values?alt=json";
+	if (id)
+		this.url = "https://spreadsheets.google.com/feeds/list/" + id + "/od6/public/values?alt=json";
+
+	if (!this.url)
+		throw "Need a google drive url to update file";
 
 	var self = this;
 
@@ -77,26 +106,11 @@ drive.prototype.update = function(id, callback){
 
 		self.data = self.parse(sheet);
 
-		if (callback)
-			callback.call(self, self.data);
+		if (self.after)
+			self.after.call(self, self.data);
 
 		self.store();
 		});
-	};
-
-
-
-/**
- * Init
- * Create an empty, local copy for the database
- */
-drive.prototype.init = function(){
-
-	// The default, empty database
-	var json = JSON.stringify({ information: {}, data: [] });
-
-	// Write it to the correct file
-	fs.writeFileSync(this.cachePath, json);
 	};
 
 

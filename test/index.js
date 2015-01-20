@@ -34,7 +34,7 @@ describe('drive.update(id, callback)', function(){
   it('should update the db', function(done){
 
     // Retrieve the spreadsheet
-    drive.update("1BfDC-ryuqahvAVKFpu21KytkBWsFDSV4clNex4F1AXc", function(){
+    drive.update("1BfDC-ryuqahvAVKFpu21KytkBWsFDSV4clNex4F1AXc", function(data){
       if (this.data.length === 0)
         throw "No data loaded";
       done();
