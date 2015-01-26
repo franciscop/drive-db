@@ -13,18 +13,10 @@ var drive = function (){};
 
 
 /**
- * Url
- * Location of the original spreadsheet
- */
-drive.prototype.url = "";
-
-
-
-/**
  * Cache Path
  * Path where a local copy will be stored
  */
-drive.prototype.cachePath = "db.json";
+drive.prototype.cachePath = 'db.json';
 
 
 
@@ -41,6 +33,13 @@ drive.prototype.info = {};
  * This variable will contain the database data
  */
 drive.prototype.data = [];
+
+
+/**
+ * Loaded
+ * Variable set to true if the database is loaded
+ */
+drive.prototype.loaded = false;
 
 
 
@@ -60,17 +59,17 @@ drive.prototype.load = function(cachePath){
 		}
 	
 	// Read the raw db into a variable
-	var rawJson = fs.readFileSync(this.cachePath, "utf-8");
+	var rawJson = fs.readFileSync(this.cachePath, 'utf-8');
 
 	// Store it in a decent way
 	try {
 		var db = JSON.parse(rawJson);
 		this.data = db.data;
 		this.info = db.info;
+		this.loaded = true;
 		}
 	catch(error) {
-		console.log("Error reading from local db. Current values:");
-		console.log(rawJson);
+		console.log('Error reading from local db.');
 		}
 
 	return this;
@@ -89,19 +88,24 @@ drive.prototype.update = function(id, callback){
 	this.after = callback ? callback : this.after;
 
 	// Store the url from google drive
-	if (id)
-		this.url = "https://spreadsheets.google.com/feeds/list/" + id + "/od6/public/values?alt=json";
+	if (id) {
+		this.id = id;
+		}
 
-	if (!this.url)
-		throw "Need a google drive url to update file";
+	if (!this.id)
+		throw 'Need a google drive url to update file';
+
+	var url = 'https://spreadsheets.google.com/feeds/list/' + id + '/od6/public/values?alt=json';
 
 	var self = this;
 
 	// Call request() but keep this as `drive`
-	request(this.url, function(error, code, sheet){
+	request(url, function(error, code, sheet){
 
-		if (error)
+		if (error) {
+			console.log(error);
 			return false;
+			}
 
 		// So that you can access this within self.after
 		self.data = self.parse(sheet);
@@ -132,7 +136,10 @@ drive.prototype.store = function(){
 
 	// The data to store
 	var save = JSON.stringify({
-		info: { updated: new Date().getTime() },
+		info: {
+			id: this.id,
+			updated: new Date().getTime(),
+		},
 		data: this.data
 		}, null, 2);
 
@@ -200,6 +207,7 @@ drive.prototype.each = function(fn){
 /**
  * Clean
  * Sanitize the data by deleting empty stuff
+ * If we need to clean it means we mess up. Fix it somehow
  */
 drive.prototype.clean = function(){
 
@@ -263,7 +271,7 @@ function good(value, test){
 
 
 // Find one instance
-// Filter: { id: "bla" } | "bla" | null
+// Filter: { id: 'bla' } | 'bla' | null
 drive.prototype.find = function(filter) {
 
 	// Allow for simplification when calling it
@@ -279,6 +287,7 @@ drive.prototype.find = function(filter) {
 		// Loop through all of the tests
 		for (var field in filter) {
 
+			// Make sure we're dealing with a filter field
 			if (filter.hasOwnProperty(field)) {
 
 				// If one of the tests fails

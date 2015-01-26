@@ -15,14 +15,12 @@ The database is stored locally and updated whenever you want from the spreadshee
     var Johns = drive.find({ firstname: "John" });
 
 
-To update the data async, call next code. Update it whenever you want, after the `.load()` or each X seconds/minutes/hours:
+To update the data asynchronously, call next code. Update it whenever you want, after the `.load()` or each X seconds/minutes/hours:
     
     // Update the local data (async)
     drive.update("1BfDC-ryuqahvAVKFpu21KytkBWsFDSV4clNex4F1AXc");
 
 You can perform `find()` queries like mongoDB's [comparison query operators](http://docs.mongodb.org/manual/reference/operator/query-comparison/) after you have called `.load()` (otherwise you have nothing to find):
-
-    var drive = require("drive-db").load();
 
     // Return an array with one element that has the id 3
     drive.find({ id: 3 });  
@@ -32,7 +30,6 @@ You can perform `find()` queries like mongoDB's [comparison query operators](htt
 
     // Return an array with everyone but "John"
     drive.find({ firstname: { $ne: "John" } });
-
 
 
 ## Installation

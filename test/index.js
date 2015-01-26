@@ -6,15 +6,15 @@ var should = require('chai').should(),
 function checkDrive(obj) {
 
   // There's something
-  if (!drive)
+  if (!obj)
     throw "No database given";
 
   // It's an object
-  if (typeof drive !== "object")
+  if (typeof obj !== "object")
     throw "DB should be an object";
 
   // It's the right object
-  if (!(drive instanceof drive.constructor))
+  if (!(obj instanceof drive.constructor))
     throw "DB should be an instance of drive";
   }
 
@@ -28,6 +28,7 @@ describe('drive.load(callback)', function(){
     // Load the data
     drive.load();
 
+    // Check if drive is right
     checkDrive(drive);
     });
 
@@ -56,6 +57,8 @@ describe('drive.update(id, callback)', function(){
 
   // Retrieve the spreadsheet
   it('should update the db', function(done){
+
+    drive.load("db.json");
 
     // Retrieve the spreadsheet
     drive.update("1BfDC-ryuqahvAVKFpu21KytkBWsFDSV4clNex4F1AXc", function(data){
