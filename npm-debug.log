@@ -1,0 +1,100 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'node', '/usr/local/bin/npm', 'publish' ]
+2 info using npm@2.1.18
+3 info using node@v0.10.25
+4 verbose node symlink /usr/bin/node
+5 verbose publish [ '.' ]
+6 silly cache add args [ '.', null ]
+7 verbose cache add spec .
+8 silly cache add parsed spec { raw: '.',
+8 silly cache add   scope: null,
+8 silly cache add   name: null,
+8 silly cache add   rawSpec: '.',
+8 silly cache add   spec: '/home/francisco/.dropbox/Dropbox/Projects/drive-db',
+8 silly cache add   type: 'directory' }
+9 verbose addLocalDirectory /home/francisco/.npm/drive-db/1.5.0/package.tgz not in flight; packing
+10 verbose tar pack [ '/home/francisco/.npm/drive-db/1.5.0/package.tgz',
+10 verbose tar pack   '/home/francisco/.dropbox/Dropbox/Projects/drive-db' ]
+11 verbose tarball /home/francisco/.npm/drive-db/1.5.0/package.tgz
+12 verbose folder /home/francisco/.dropbox/Dropbox/Projects/drive-db
+13 info prepublish drive-db@1.5.0
+14 verbose addLocalTarball adding from inside cache /home/francisco/.npm/drive-db/1.5.0/package.tgz
+15 silly cache afterAdd drive-db@1.5.0
+16 verbose afterAdd /home/francisco/.npm/drive-db/1.5.0/package/package.json not in flight; writing
+17 verbose afterAdd /home/francisco/.npm/drive-db/1.5.0/package/package.json written
+18 silly publish { name: 'drive-db',
+18 silly publish   version: '1.5.0',
+18 silly publish   description: 'A simple google drive spreadsheet database',
+18 silly publish   main: 'index.js',
+18 silly publish   scripts: { test: 'make test' },
+18 silly publish   repository:
+18 silly publish    { type: 'git',
+18 silly publish      url: 'https://github.com/FranciscoP/drive-db.git' },
+18 silly publish   keywords: [ 'google', 'drive', 'database', 'db', 'table', 'spreadsheet' ],
+18 silly publish   author: { name: 'Francisco Presencia Fandos' },
+18 silly publish   licenses:
+18 silly publish    [ { type: 'MIT',
+18 silly publish        url: 'https://github.com/brentertz/scapegoat/blob/master/LICENSE-MIT' } ],
+18 silly publish   bugs: { url: 'https://github.com/FranciscoP/drive-db/issues' },
+18 silly publish   homepage: 'https://github.com/FranciscoP/drive-db',
+18 silly publish   dependencies: { request: '^2.51.0' },
+18 silly publish   devDependencies: { chai: '^1.10.0', mocha: '^2.1.0' },
+18 silly publish   readme: '# drive-db\n\nA Google Drive spreadsheet simple database. Stop wasting your time when a simple table is enough. Perfect for collaboration with multiple people editing the same table.\n\n\n\n## Usage\n\nThe database is stored locally and updated whenever you want from the spreadsheet. For detailed documentation read documentation.md, but it\'s really easy to use:\n\n    // Include the module and load the data from the default local cache\n    var drive = require("drive-db").load();\n\n    // Retrieve all the people named `John`\n    var Johns = drive.find({ firstname: "John" });\n\n\nTo update the data asynchronously, call next code. Update it whenever you want, after the `.load()` or each X seconds/minutes/hours:\n    \n    // Update the local data (async)\n    drive.update("1BfDC-ryuqahvAVKFpu21KytkBWsFDSV4clNex4F1AXc");\n\nYou can perform `find()` queries like mongoDB\'s [comparison query operators](http://docs.mongodb.org/manual/reference/operator/query-comparison/) after you have called `.load()` (otherwise you have nothing to find):\n\n    // Return an array with one element that has the id 3\n    drive.find({ id: 3 });  \n\n    // Return an array of people called "John" or "Jack"\n    drive.find({ firstname: { $in: ["John", "Jack"]] } });\n\n    // Return an array with everyone but "John"\n    drive.find({ firstname: { $ne: "John" } });\n\n\n## Installation\n\n    npm install drive-db --save\n\nTo get the right google drive spreadsheet:\n\n- Create the spreadsheet\n- File > Publish to the Web > Publish\n- Copy the id between `/spreadsheets/` and `/edit` in the url:\n    \n    > [https://docs.google.com/spreadsheets/d/<strong>1fvz34wY6phWDJsuIneqvOoZRPfo6CfJyPg1BYgHt59k</strong>/edit#gid=0](https://docs.google.com/spreadsheets/d/1fvz34wY6phWDJsuIneqvOoZRPfo6CfJyPg1BYgHt59k/edit#gid=0)\n\n- Use this inside `update()`\n    \n        drive.update("1fvz34wY6phWDJsuIneqvOoZRPfo6CfJyPg1BYgHt59k");\n\n\n\n## Test\n\n    npm test\n\n## Contributing\n\nIn lieu of a formal styleguide, take care to maintain the existing coding style.\nAdd unit tests for any new or changed functionality. Lint and test your code.\n\nAreas where I\'m seeking for help:\n\n- Coverage of tests\n- Documentation\n- Testing it\n\n\n## Release history\n\n- 1.5 Gave the `info` to the global object instead of a sub-object. Stored the error and code from the update in the db. Added the method `order()` for the array from `find()`.\n- 1.4 Changed the way it works internally from url to spreadsheet id.\n- 1.3  Stopped `require(\'drive-db\')` from calling `.load()` automatically. The DB might me elsewhere. There\'s always an `.after` function.\n- 1.2 Changed several things. Created `documentation.md`, which should be up to date to keep up with the changes.\n- 1.1 Changed the parameter inside `load()`. Now it\'s the file where the cache is stored.\n- 1.0.0 First release\n\nThanks\n\n- [Creating and publishing a node.js module](https://quickleft.com/blog/creating-and-publishing-a-node-js-module/)\n',
+18 silly publish   readmeFilename: 'README.md',
+18 silly publish   gitHead: '6494d2458d15f72e589b67a1a64d6ad571d645cd',
+18 silly publish   _id: 'drive-db@1.5.0',
+18 silly publish   _shasum: '504b51128f98eb31df3036d6f9067ce3abbec8cd',
+18 silly publish   _from: '.' }
+19 silly mapToRegistry name drive-db
+20 silly mapToRegistry using default registry
+21 silly mapToRegistry registry http://registry.npmjs.org/
+22 silly mapToRegistry uri http://registry.npmjs.org/drive-db
+23 verbose publish registryBase http://registry.npmjs.org/
+24 silly publish uploading /home/francisco/.npm/drive-db/1.5.0/package.tgz
+25 verbose request uri http://registry.npmjs.org/drive-db
+26 verbose request sending authorization for write operation
+27 info attempt registry request try #1 at 18:33:40
+28 verbose request id ea476102fe3f9250
+29 http request PUT http://registry.npmjs.org/drive-db
+30 http 403 http://registry.npmjs.org/drive-db
+31 verbose headers { server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+31 verbose headers   'content-type': 'application/json',
+31 verbose headers   'cache-control': 'max-age=60',
+31 verbose headers   'content-length': '6115',
+31 verbose headers   'accept-ranges': 'bytes',
+31 verbose headers   date: 'Sat, 31 Jan 2015 17:33:40 GMT',
+31 verbose headers   via: '1.1 varnish',
+31 verbose headers   connection: 'keep-alive',
+31 verbose headers   'x-served-by': 'cache-fra1246-FRA',
+31 verbose headers   'x-cache': 'MISS',
+31 verbose headers   'x-cache-hits': '0',
+31 verbose headers   'x-timer': 'S1422725620.548731,VS0,VE401' }
+32 verbose request invalidating /home/francisco/.npm/registry.npmjs.org/drive-db on PUT
+33 error publish Failed PUT 403
+34 verbose stack Error: forbidden cannot modify pre-existing version: 1.5.0
+34 verbose stack old={"name":"drive-db","version":"1.5.0","description":"A simple google drive spreadsheet database","main":"index.js","scripts":{"test":"make test"},"repository":{"type":"git","url":"https://github.com/FranciscoP/drive-db.git"},"keywords":["google","drive","database","db","table","spreadsheet"],"author":{"name":"Francisco Presencia Fandos"},"licenses":[{"type":"MIT","url":"https://github.com/brentertz/scapegoat/blob/master/LICENSE-MIT"}],"bugs":{"url":"https://github.com/FranciscoP/drive-db/issues"},"homepage":"https://github.com/FranciscoP/drive-db","dependencies":{"request":"^2.51.0"},"devDependencies":{"chai":"^1.10.0","mocha":"^2.1.0"},"gitHead":"6494d2458d15f72e589b67a1a64d6ad571d645cd","_id":"drive-db@1.5.0","_shasum":"bda21ae2f64c936785f58ed337646086701c07ee","_from":".","_npmVersion":"2.1.18","_nodeVersion":"0.10.25","_npmUser":{"name":"franciscop","email":"developerfrancisco@hotmail.com"},"maintainers":[{"name":"franciscop","email":"developerfrancisco@hotmail.com"}],"dist":{"shasum":"bda21ae2f64c936785f58ed337646086701c07ee","tarball":"http://registry.npmjs.org/drive-db/-/drive-db-1.5.0.tgz"}}
+34 verbose stack new={"name":"drive-db","version":"1.5.0","description":"A simple google drive spreadsheet database","main":"index.js","scripts":{"test":"make test"},"repository":{"type":"git","url":"https://github.com/FranciscoP/drive-db.git"},"keywords":["google","drive","database","db","table","spreadsheet"],"author":{"name":"Francisco Presencia Fandos"},"licenses":[{"type":"MIT","url":"https://github.com/brentertz/scapegoat/blob/master/LICENSE-MIT"}],"bugs":{"url":"https://github.com/FranciscoP/drive-db/issues"},"homepage":"https://github.com/FranciscoP/drive-db","dependencies":{"request":"^2.51.0"},"devDependencies":{"chai":"^1.10.0","mocha":"^2.1.0"},"readme":"# drive-db\u000a\u000aA Google Drive spreadsheet simple database. Stop wasting your time when a simple table is enough. Perfect for collaboration with multiple people editing the same table.\u000a\u000a\u000a\u000a## Usage\u000a\u000aThe database is stored locally and updated whenever you want from the spreadsheet. For detailed documentation read documentation.md, but it's really easy to use:\u000a\u000a    // Include the module and load the data from the default local cache\u000a    var drive = require(\"drive-db\").load();\u000a\u000a    // Retrieve all the people named `John`\u000a    var Johns = drive.find({ firstname: \"John\" });\u000a\u000a\u000aTo update the data asynchronously, call next code. Update it whenever you want, after the `.load()` or each X seconds/minutes/hours:\u000a    \u000a    // Update the local data (async)\u000a    drive.update(\"1BfDC-ryuqahvAVKFpu21KytkBWsFDSV4clNex4F1AXc\");\u000a\u000aYou can perform `find()` queries like mongoDB's [comparison query operators](http://docs.mongodb.org/manual/reference/operator/query-comparison/) after you have called `.load()` (otherwise you have nothing to find):\u000a\u000a    // Return an array with one element that has the id 3\u000a    drive.find({ id: 3 });  \u000a\u000a    // Return an array of people called \"John\" or \"Jack\"\u000a    drive.find({ firstname: { $in: [\"John\", \"Jack\"]] } });\u000a\u000a    // Return an array with everyone but \"John\"\u000a    drive.find({ firstname: { $ne: \"John\" } });\u000a\u000a\u000a## Installation\u000a\u000a    npm install drive-db --save\u000a\u000aTo get the right google drive spreadsheet:\u000a\u000a- Create the spreadsheet\u000a- File > Publish to the Web > Publish\u000a- Copy the id between `/spreadsheets/` and `/edit` in the url:\u000a    \u000a    > [https://docs.google.com/spreadsheets/d/<strong>1fvz34wY6phWDJsuIneqvOoZRPfo6CfJyPg1BYgHt59k</strong>/edit#gid=0](https://docs.google.com/spreadsheets/d/1fvz34wY6phWDJsuIneqvOoZRPfo6CfJyPg1BYgHt59k/edit#gid=0)\u000a\u000a- Use this inside `update()`\u000a    \u000a        drive.update(\"1fvz34wY6phWDJsuIneqvOoZRPfo6CfJyPg1BYgHt59k\");\u000a\u000a\u000a\u000a## Test\u000a\u000a    npm test\u000a\u000a## Contributing\u000a\u000aIn lieu of a formal styleguide, take care to maintain the existing coding style.\u000aAdd unit tests for any new or changed functionality. Lint and test your code.\u000a\u000aAreas where I'm seeking for help:\u000a\u000a- Coverage of tests\u000a- Documentation\u000a- Testing it\u000a\u000a\u000a## Release history\u000a\u000a- 1.5 Gave the `info` to the global object instead of a sub-object. Stored the error and code from the update in the db. Added the method `order()` for the array from `find()`.\u000a- 1.4 Changed the way it works internally from url to spreadsheet id.\u000a- 1.3  Stopped `require('drive-db')` from calling `.load()` automatically. The DB might me elsewhere. There's always an `.after` function.\u000a- 1.2 Changed several things. Created `documentation.md`, which should be up to date to keep up with the changes.\u000a- 1.1 Changed the parameter inside `load()`. Now it's the file where the cache is stored.\u000a- 1.0.0 First release\u000a\u000aThanks\u000a\u000a- [Creating and publishing a node.js module](https://quickleft.com/blog/creating-and-publishing-a-node-js-module/)\u000a","readmeFilename":"README.md","gitHead":"6494d2458d15f72e589b67a1a64d6ad571d645cd","_id":"drive-db@1.5.0","_shasum":"504b51128f98eb31df3036d6f9067ce3abbec8cd","_from":".","_npmVersion":"2.1.18","_nodeVersion":"0.10.25","_npmUser":{"name":"franciscop","email":"developerfrancisco@hotmail.com"},"maintainers":[{"name":"franciscop","email":"developerfrancisco@hotmail.com"}],"dist":{"shasum":"504b51128f98eb31df3036d6f9067ce3abbec8cd","tarball":"http://registry.npmjs.org/drive-db/-/drive-db-1.5.0.tgz"}}: drive-db
+34 verbose stack     at CachingRegistryClient.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:244:14)
+34 verbose stack     at Request._callback (/usr/local/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:172:14)
+34 verbose stack     at Request.self.callback (/usr/local/lib/node_modules/npm/node_modules/request/request.js:373:22)
+34 verbose stack     at Request.EventEmitter.emit (events.js:98:17)
+34 verbose stack     at Request.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/request/request.js:1318:14)
+34 verbose stack     at Request.EventEmitter.emit (events.js:117:20)
+34 verbose stack     at IncomingMessage.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/request/request.js:1266:12)
+34 verbose stack     at IncomingMessage.EventEmitter.emit (events.js:117:20)
+34 verbose stack     at _stream_readable.js:920:16
+34 verbose stack     at process._tickCallback (node.js:415:13)
+35 verbose statusCode 403
+36 verbose pkgid drive-db
+37 verbose cwd /home/francisco/.dropbox/Dropbox/Projects/drive-db
+38 error Linux 3.13.0-39-generic
+39 error argv "node" "/usr/local/bin/npm" "publish"
+40 error node v0.10.25
+41 error npm  v2.1.18
+42 error code E403
+43 error forbidden cannot modify pre-existing version: 1.5.0
+43 error old={"name":"drive-db","version":"1.5.0","description":"A simple google drive spreadsheet database","main":"index.js","scripts":{"test":"make test"},"repository":{"type":"git","url":"https://github.com/FranciscoP/drive-db.git"},"keywords":["google","drive","database","db","table","spreadsheet"],"author":{"name":"Francisco Presencia Fandos"},"licenses":[{"type":"MIT","url":"https://github.com/brentertz/scapegoat/blob/master/LICENSE-MIT"}],"bugs":{"url":"https://github.com/FranciscoP/drive-db/issues"},"homepage":"https://github.com/FranciscoP/drive-db","dependencies":{"request":"^2.51.0"},"devDependencies":{"chai":"^1.10.0","mocha":"^2.1.0"},"gitHead":"6494d2458d15f72e589b67a1a64d6ad571d645cd","_id":"drive-db@1.5.0","_shasum":"bda21ae2f64c936785f58ed337646086701c07ee","_from":".","_npmVersion":"2.1.18","_nodeVersion":"0.10.25","_npmUser":{"name":"franciscop","email":"developerfrancisco@hotmail.com"},"maintainers":[{"name":"franciscop","email":"developerfrancisco@hotmail.com"}],"dist":{"shasum":"bda21ae2f64c936785f58ed337646086701c07ee","tarball":"http://registry.npmjs.org/drive-db/-/drive-db-1.5.0.tgz"}}
+43 error new={"name":"drive-db","version":"1.5.0","description":"A simple google drive spreadsheet database","main":"index.js","scripts":{"test":"make test"},"repository":{"type":"git","url":"https://github.com/FranciscoP/drive-db.git"},"keywords":["google","drive","database","db","table","spreadsheet"],"author":{"name":"Francisco Presencia Fandos"},"licenses":[{"type":"MIT","url":"https://github.com/brentertz/scapegoat/blob/master/LICENSE-MIT"}],"bugs":{"url":"https://github.com/FranciscoP/drive-db/issues"},"homepage":"https://github.com/FranciscoP/drive-db","dependencies":{"request":"^2.51.0"},"devDependencies":{"chai":"^1.10.0","mocha":"^2.1.0"},"readme":"# drive-db\u000a\u000aA Google Drive spreadsheet simple database. Stop wasting your time when a simple table is enough. Perfect for collaboration with multiple people editing the same table.\u000a\u000a\u000a\u000a## Usage\u000a\u000aThe database is stored locally and updated whenever you want from the spreadsheet. For detailed documentation read documentation.md, but it's really easy to use:\u000a\u000a    // Include the module and load the data from the default local cache\u000a    var drive = require(\"drive-db\").load();\u000a\u000a    // Retrieve all the people named `John`\u000a    var Johns = drive.find({ firstname: \"John\" });\u000a\u000a\u000aTo update the data asynchronously, call next code. Update it whenever you want, after the `.load()` or each X seconds/minutes/hours:\u000a    \u000a    // Update the local data (async)\u000a    drive.update(\"1BfDC-ryuqahvAVKFpu21KytkBWsFDSV4clNex4F1AXc\");\u000a\u000aYou can perform `find()` queries like mongoDB's [comparison query operators](http://docs.mongodb.org/manual/reference/operator/query-comparison/) after you have called `.load()` (otherwise you have nothing to find):\u000a\u000a    // Return an array with one element that has the id 3\u000a    drive.find({ id: 3 });  \u000a\u000a    // Return an array of people called \"John\" or \"Jack\"\u000a    drive.find({ firstname: { $in: [\"John\", \"Jack\"]] } });\u000a\u000a    // Return an array with everyone but \"John\"\u000a    drive.find({ firstname: { $ne: \"John\" } });\u000a\u000a\u000a## Installation\u000a\u000a    npm install drive-db --save\u000a\u000aTo get the right google drive spreadsheet:\u000a\u000a- Create the spreadsheet\u000a- File > Publish to the Web > Publish\u000a- Copy the id between `/spreadsheets/` and `/edit` in the url:\u000a    \u000a    > [https://docs.google.com/spreadsheets/d/<strong>1fvz34wY6phWDJsuIneqvOoZRPfo6CfJyPg1BYgHt59k</strong>/edit#gid=0](https://docs.google.com/spreadsheets/d/1fvz34wY6phWDJsuIneqvOoZRPfo6CfJyPg1BYgHt59k/edit#gid=0)\u000a\u000a- Use this inside `update()`\u000a    \u000a        drive.update(\"1fvz34wY6phWDJsuIneqvOoZRPfo6CfJyPg1BYgHt59k\");\u000a\u000a\u000a\u000a## Test\u000a\u000a    npm test\u000a\u000a## Contributing\u000a\u000aIn lieu of a formal styleguide, take care to maintain the existing coding style.\u000aAdd unit tests for any new or changed functionality. Lint and test your code.\u000a\u000aAreas where I'm seeking for help:\u000a\u000a- Coverage of tests\u000a- Documentation\u000a- Testing it\u000a\u000a\u000a## Release history\u000a\u000a- 1.5 Gave the `info` to the global object instead of a sub-object. Stored the error and code from the update in the db. Added the method `order()` for the array from `find()`.\u000a- 1.4 Changed the way it works internally from url to spreadsheet id.\u000a- 1.3  Stopped `require('drive-db')` from calling `.load()` automatically. The DB might me elsewhere. There's always an `.after` function.\u000a- 1.2 Changed several things. Created `documentation.md`, which should be up to date to keep up with the changes.\u000a- 1.1 Changed the parameter inside `load()`. Now it's the file where the cache is stored.\u000a- 1.0.0 First release\u000a\u000aThanks\u000a\u000a- [Creating and publishing a node.js module](https://quickleft.com/blog/creating-and-publishing-a-node-js-module/)\u000a","readmeFilename":"README.md","gitHead":"6494d2458d15f72e589b67a1a64d6ad571d645cd","_id":"drive-db@1.5.0","_shasum":"504b51128f98eb31df3036d6f9067ce3abbec8cd","_from":".","_npmVersion":"2.1.18","_nodeVersion":"0.10.25","_npmUser":{"name":"franciscop","email":"developerfrancisco@hotmail.com"},"maintainers":[{"name":"franciscop","email":"developerfrancisco@hotmail.com"}],"dist":{"shasum":"504b51128f98eb31df3036d6f9067ce3abbec8cd","tarball":"http://registry.npmjs.org/drive-db/-/drive-db-1.5.0.tgz"}}: drive-db
+44 error If you need help, you may report this error at:
+44 error     <http://github.com/npm/npm/issues>
+45 verbose exit [ 1, true ]

@@ -128,6 +128,7 @@ drive.prototype.update = function(id, callback){
 			return false;
 			}
 
+		self.error = "";
 		// So that you can access this within self.after
 		self.data = self.parse(sheet);
 
