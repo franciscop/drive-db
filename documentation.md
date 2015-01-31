@@ -70,9 +70,9 @@ Retrieve data from the database. If there's no filter, the whole spreadsheet wil
 
 
 
-## .sort(field[, desc])
+## .order(field[, desc])
 
-> This is tested only informally, but no formal test have been written yet. It does seem to work, but further testing is required. This might change soon (see note in `.limit()`)
+> This has been called `order()` instead of `sort()` as a javascript Array already has a native method called `sort()` which works quite diferent.
 
 Sort the data by the given field. It sorts it in an ascendant order. Pass a second parameter as true and it will sort it in a descendant order. It should be called **before** `.find()`. Examples:
 

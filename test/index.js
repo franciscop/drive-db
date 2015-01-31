@@ -16,6 +16,9 @@ function checkDrive(obj) {
   // It's the right object
   if (!(obj instanceof drive.constructor))
     throw "DB should be an instance of drive";
+
+  if (!(drive.hasOwnProperty("data")))
+    throw "Drive should have a data parameter";
   }
 
 
@@ -55,18 +58,29 @@ describe('drive.load(callback)', function(){
 // Attempt to update the cache
 describe('drive.update(id, callback)', function(){
 
-  // Retrieve the spreadsheet
   it('should update the db', function(done){
 
-    drive.load("db.json");
+    drive.load("test/db.json");
 
     // Retrieve the spreadsheet
     drive.update("1BfDC-ryuqahvAVKFpu21KytkBWsFDSV4clNex4F1AXc", function(data){
       done();
-      if (this. data.length === 0)
-        throw "No data loaded";
       return data;
       });
+    });
+
+  it('should store an error', function(done){
+
+    drive.load("test/error.json");
+
+    // Retrieve the spreadsheet
+    drive.update("wrong-id");
+
+    setTimeout(function(){
+      if(!drive.error)
+        throw "Error not stored";
+      done();
+      }, 1500);
     });
   
   // Check on the retrieved data
@@ -141,5 +155,38 @@ describe('drive.find(complexfilter)', function(){
     var none = records.filter(function(row){ return row.id <= 4; });
     if (none.length > 0)
       throw "There's some record smaller than 4";
+    });
+  });
+
+
+
+// Attempt to update the cache
+describe('sort', function(){
+
+  // Retrieve the spreadsheet
+  var collection = drive.load().find();
+
+  // Retrieve the spreadsheet
+  it('should sort by firstname', function(){
+
+    var people = collection.order("firstname");
+
+    if (people[1].firstname < people[0].firstname
+     || people[2].firstname < people[1].firstname
+     || people[3].firstname < people[2].firstname
+     || people[4].firstname < people[3].firstname)
+      throw "Should be ordered ascendent";
+    });
+
+  // Retrieve the spreadsheet
+  it('should sort by age', function(){
+
+    var people = collection.order("age");
+
+    if (people[1].age < people[0].age
+     || people[2].age < people[1].age
+     || people[3].age < people[2].age
+     || people[4].age < people[3].age)
+      throw "Should be ordered ascendent";
     });
   });

@@ -42,6 +42,20 @@ drive.prototype.data = [];
 drive.prototype.loaded = false;
 
 
+/**
+ * Error
+ * Variable to store the database errors
+ */
+drive.prototype.error = false;
+
+
+/**
+ * Loaded
+ * Variable with the response code
+ */
+drive.prototype.code = 0;
+
+
 
 /**
  * Load
@@ -65,7 +79,9 @@ drive.prototype.load = function(cachePath){
 	try {
 		var db = JSON.parse(rawJson);
 		this.data = db.data;
-		this.info = db.info;
+		for (var key in db.info) {
+			this[key] = db.info[key];
+			}
 		this.loaded = true;
 		}
 	catch(error) {
@@ -100,18 +116,25 @@ drive.prototype.update = function(id, callback){
 	var self = this;
 
 	// Call request() but keep this as `drive`
-	request(url, function(error, code, sheet){
+	request(url, function(error, response, sheet){
 
-		if (error) {
-			console.log(error);
+		// Store the response code
+		self.code = response.statusCode;
+
+		// If it's an error code
+		if (self.code >= 400) {
+			self.error = response.body;
+			self.store();
 			return false;
 			}
 
 		// So that you can access this within self.after
 		self.data = self.parse(sheet);
 
+		// Call the function that should be called after retrieving the data
 		self.data = self.after.call(self, self.data);
 
+		// Actually save the data into the file
 		self.store();
 		});
 	};
@@ -134,11 +157,16 @@ drive.prototype.after = function(data){
  */
 drive.prototype.store = function(){
 
+	// Store when it is last updated
+	this.updated = new Date().getTime();
+
 	// The data to store
 	var save = JSON.stringify({
 		info: {
 			id: this.id,
-			updated: new Date().getTime(),
+			updated: this.updated,
+			error: this.error,
+			code: this.code
 		},
 		data: this.data
 		}, null, 2);
@@ -304,9 +332,30 @@ drive.prototype.find = function(filter) {
 		});
 
 	// http://stackoverflow.com/a/2843625
-	return passed.filter(function(row){
+	passed = passed.filter(function(row){
 		return (row !== undefined && row !== null && row !== false);
 		});
+
+	// This has been called `order` since Array already has a function called `sort`
+	passed.order = function(field, desc){
+
+		// Inverse the order of the sort
+		var inv = (desc) ? -1 : 1;
+
+		// Compare two fields
+		function compare(a, b) {
+
+			return (a[field] == b[field]) ? 0 :
+				(a[field] > b[field]) ? inv : - inv;
+			}
+
+		// Actually sort the data
+		this.sort(compare);
+
+		return this;
+		}
+
+	return passed;
 	};
 
 

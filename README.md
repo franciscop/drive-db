@@ -68,9 +68,11 @@ Areas where I'm seeking for help:
 
 ## Release history
 
-- 1.3
-- 1.2.0 Changed several things. Created `documentation.md`, which should be up to date to keep up with the changes.
-- 1.1.0 Changed the parameter inside `load()`. Now it's the file where the cache is stored.
+- 1.5 Gave the `info` to the global object instead of a sub-object. Stored the error and code from the update in the db. Added the method `order()` for the array from `find()`.
+- 1.4 Changed the way it works internally from url to spreadsheet id.
+- 1.3  Stopped `require('drive-db')` from calling `.load()` automatically. The DB might me elsewhere. There's always an `.after` function.
+- 1.2 Changed several things. Created `documentation.md`, which should be up to date to keep up with the changes.
+- 1.1 Changed the parameter inside `load()`. Now it's the file where the cache is stored.
 - 1.0.0 First release
 
 Thanks

@@ -1,9 +1,9 @@
 {
   "info": {
-    "id": "1BfDC-ryuqahvAVKFpu21KytkBWsFDSV4clNex4F1AXc",
-    "updated": 1422724204733,
-    "error": false,
-    "code": 0
+    "id": "wrong-id",
+    "updated": 1422725489726,
+    "error": "No se encuentra la hoja de cálculo de esta dirección. Asegúrate de que tienes la dirección correcta y de que el usuario de la hoja de cálculo no la ha eliminado.",
+    "code": 400
   },
   "data": [
     {
