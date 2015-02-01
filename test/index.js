@@ -190,3 +190,30 @@ describe('sort', function(){
       throw "Should be ordered descendent";
     });
   });
+
+
+
+// Attempt to update the cache
+describe('limit', function(){
+
+  // Retrieve the spreadsheet
+  var collection = drive.load("test/db.json").find();
+
+  // Retrieve the spreadsheet
+  it('should retrieve the first 2 elements', function(){
+
+    var people = collection.limit(0, 2);
+
+    if (people.length !== 2)
+      throw "Should retrieve only 2 people";
+    });
+
+  // Retrieve the spreadsheet
+  it('should retrieve the first 2 elements', function(){
+
+    var people = collection.limit(-2);
+
+    if (people.length !== 2)
+      throw "Should retrieve only 2 people";
+    });
+  });

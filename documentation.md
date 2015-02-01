@@ -66,8 +66,9 @@ Note that, if you call `.update(id)` and the file doesn't exist yet, it will be 
 
 ## .find([filter])
 
-Retrieve data from the database. If there's no filter, the whole spreadsheet will be retrieved. It behaves in the same way as mongoDB's [comparison query operators](http://docs.mongodb.org/manual/reference/operator/query-comparison/), so you can read the documentation there. Returns a javascript Array with the extra methods `.order()` and (not yet) `.limit(begin, end)`.
+Retrieve data from the database. If there's no filter, the whole spreadsheet will be retrieved. It behaves in the same way as mongoDB's [comparison query operators](http://docs.mongodb.org/manual/reference/operator/query-comparison/), so you can read the documentation there. Returns a javascript Array with the extra methods `.order()` and (not yet) `.limit(begin, end)`. So, the documentation is here:
 
+> **[mongoDB comparison query operators](http://docs.mongodb.org/manual/reference/operator/query-comparison/)**
 
 
 ## .order(field[, desc])
@@ -88,19 +89,18 @@ Sort the data by the given field. It sorts it in an ascendant order. Pass a seco
 
 ## .limit(begin, end)
 
-> Not yet developed
+> An alternative name to the native `.slice()`. The [Mozilla documentation](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/slice) is pretty neat. I created this to make it consistent to database manipulation names.
 
-Limit the data that can be retrieved. The reason it's not developed yet is that we need a strong concept to avoid clipping the data for future queries in the db. This would give some trouble currently:
+Limit the data that can be retrieved. It should be applied to the returning array from `.find()`, and not before:
 
-    // Correctly finds from 0 to 10
-    drive.limit(0, 10).find();
-
-    // Incorrectly only finds from 0 to 10
-    drive.find();
-
-Possible solution: to create an object that extends array so that the result returned by `find()` can be processed as does mongoDB with `collection`. It would work the other way around:
-
+    // Limit the set to the first 10 elements
     drive.find().limit(0, 10);
-    drive.find().limit(0, 10).sort("firstname");
-    drive.find().sort("firstname", true);
 
+    // Retrieve the next 10 elements (pagination, infinite scroll, etc)
+    drive.find().limit(10, 20);
+
+    // Retrieves the last 2 elements
+    drive.find().limit(-2);
+
+    // Order the query and limit it
+    drive.find().sort("firstname").limit(0, 10);

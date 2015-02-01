@@ -207,9 +207,8 @@ drive.prototype.parse = function(raw) {
 				}
 			}
 
-		// Return only if there's an id to return
-		if (entry.id)
-			return entry;
+		// Return it anyway
+		return entry;
 		});
 
 	// Clean the data
@@ -357,6 +356,9 @@ drive.prototype.find = function(filter) {
 		return this;
 		}
 
+	// Define .limit() as .slice()
+	passed.limit = passed.slice;
+
 	return passed;
 	};
 
@@ -384,7 +386,6 @@ drive.prototype.sort = function(field, desc){
 
 
 
-drive.prototype.limit = function(){};
 
 
 
