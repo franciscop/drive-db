@@ -210,12 +210,7 @@ drive.prototype.parse = function(raw) {
 		// Return it anyway
 		return entry;
 		});
-
-	// Clean the data
-	data = data.filter(function(n){
-		return n !== undefined;
-		});
-
+	
 	return data;
 	};
 
