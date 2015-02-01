@@ -52,22 +52,24 @@ To get the right google drive spreadsheet:
 
 ## Test
 
+To run the tests, simply call:
+
     npm test
 
 ## Contributing
 
-In lieu of a formal styleguide, take care to maintain the existing coding style.
-Add unit tests for any new or changed functionality. Lint and test your code.
+Please take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code.
 
 Areas where I'm seeking for help:
 
-- Coverage of tests
-- Documentation
-- Testing it
+- Testing. Adding coverage or improving existing ones.
+- Documentation. Make everything clear.
 
 
 ## Release history
 
+- 2.0 [future] finish battle testing it, full test coverage and proper documentation.
+- 1.6 [future] added the `limit()` function.
 - 1.5 Gave the `info` to the global object instead of a sub-object. Stored the error and code from the update in the db. Added the method `order()` for the array from `find()`.
 - 1.4 Changed the way it works internally from url to spreadsheet id.
 - 1.3  Stopped `require('drive-db')` from calling `.load()` automatically. The DB might me elsewhere. There's always an `.after` function.

@@ -66,7 +66,7 @@ Note that, if you call `.update(id)` and the file doesn't exist yet, it will be 
 
 ## .find([filter])
 
-Retrieve data from the database. If there's no filter, the whole spreadsheet will be retrieved. It behaves in the same way as mongoDB's [comparison query operators](http://docs.mongodb.org/manual/reference/operator/query-comparison/), so you can read the documentation there. The only difference is that it returns a normal array, so any sort or limit must happen beforehand.
+Retrieve data from the database. If there's no filter, the whole spreadsheet will be retrieved. It behaves in the same way as mongoDB's [comparison query operators](http://docs.mongodb.org/manual/reference/operator/query-comparison/), so you can read the documentation there. Returns a javascript Array with the extra methods `.order()` and (not yet) `.limit(begin, end)`.
 
 
 
@@ -74,7 +74,7 @@ Retrieve data from the database. If there's no filter, the whole spreadsheet wil
 
 > This has been called `order()` instead of `sort()` as a javascript Array already has a native method called `sort()` which works quite diferent.
 
-Sort the data by the given field. It sorts it in an ascendant order. Pass a second parameter as true and it will sort it in a descendant order. It should be called **before** `.find()`. Examples:
+Sort the data by the given field. It sorts it in an ascendant order. Pass a second parameter as true and it will sort it in a descendant order. It should be called **after** `.find()`. Examples:
 
     // Ascendant order
     var people = drive.sort('firstname').find();

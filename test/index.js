@@ -164,29 +164,29 @@ describe('drive.find(complexfilter)', function(){
 describe('sort', function(){
 
   // Retrieve the spreadsheet
-  var collection = drive.load().find();
+  var collection = drive.load("test/db.json").find();
 
   // Retrieve the spreadsheet
   it('should sort by firstname', function(){
 
     var people = collection.order("firstname");
 
-    if (people[1].firstname < people[0].firstname
-     || people[2].firstname < people[1].firstname
-     || people[3].firstname < people[2].firstname
-     || people[4].firstname < people[3].firstname)
+    if (people[0].firstname > people[1].firstname
+     || people[1].firstname > people[2].firstname
+     || people[2].firstname > people[3].firstname
+     || people[3].firstname > people[4].firstname)
       throw "Should be ordered ascendent";
     });
 
   // Retrieve the spreadsheet
-  it('should sort by age', function(){
+  it('should sort by age desc', function(){
 
-    var people = collection.order("age");
+    var people = collection.order("age", 1);
 
-    if (people[1].age < people[0].age
-     || people[2].age < people[1].age
-     || people[3].age < people[2].age
-     || people[4].age < people[3].age)
-      throw "Should be ordered ascendent";
+    if (people[0].age < people[1].age
+     || people[1].age < people[2].age
+     || people[2].age < people[3].age
+     || people[3].age < people[4].age)
+      throw "Should be ordered descendent";
     });
   });
