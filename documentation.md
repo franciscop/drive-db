@@ -78,12 +78,12 @@ Retrieve data from the database. If there's no filter, the whole spreadsheet wil
 Sort the data by the given field. It sorts it in an ascendant order. Pass a second parameter as true and it will sort it in a descendant order. It should be called **after** `.find()`. Examples:
 
     // Ascendant order
-    var people = drive.sort('firstname').find();
+    var people = drive.find().order('firstname');
 
     // Descedant order
-    var inversepeople = drive.sort('firstname', true).find();
+    var inversepeople = drive.find().order('firstname', true);
 
-    var smiths = drive.sort('firstname').find({ lastname: "Smith" });
+    var smiths = drive.find({ lastname: "Smith" }).order('firstname');
 
 
 
