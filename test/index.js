@@ -1,219 +1,37 @@
-var should = require('chai').should(),
-    drive = require('../index');
-
-
-// Check if the passed object is a drive instance or not
-function checkDrive(obj) {
-
-  // There's something
-  if (!obj)
-    throw "No database given";
-
-  // It's an object
-  if (typeof obj !== "object")
-    throw "DB should be an object";
-
-  // It's the right object
-  if (!(obj instanceof drive.constructor))
-    throw "DB should be an instance of drive";
-
-  if (!(drive.hasOwnProperty("data")))
-    throw "Drive should have a data parameter";
-  }
-
-
-// Load the DB from drive (local)
-describe('drive.load(callback)', function(){
-
-  // Make sure there's DB
-  it('load db without location', function(){
-    
-    // Load the data
-    drive.load();
-
-    // Check if drive is right
-    checkDrive(drive);
-    });
-
-  // Make sure there's DB
-  it('load database default location', function(){
-    
-    // Load the data
-    drive.load('db.json');
-
-    checkDrive(drive);
-    });
-
-  // Make sure there's DB
-  it('load database non-default location', function(){
-    
-    // Load the data
-    drive.load('database.json');
-
-    checkDrive(drive);
-    });
-  });
-
-
-// Attempt to update the cache
-describe('drive.update(id, callback)', function(){
-
-  it('should update the db', function(done){
-
-    drive.load("test/db.json");
-
-    // Retrieve the spreadsheet
-    drive.update("1BfDC-ryuqahvAVKFpu21KytkBWsFDSV4clNex4F1AXc", function(data){
-      done();
-      return data;
-      });
-    });
-
-  it('should store an error', function(done){
-
-    drive.load("test/error.json");
-
-    // Retrieve the spreadsheet
-    drive.update("wrong-id");
-
-    setTimeout(function(){
-      if(!drive.error)
-        throw "Error not stored";
-      done();
-      }, 1500);
-    });
-  
-  // Check on the retrieved data
-  after(function(){
-
-    // Retrieve the spreadsheet
-    drive.load();
-
-    // Make sure we have some info
-    if (drive.info.length === 0)
-      throw "No info stored";
-
-    // Make sure there's something returned
-    if (drive.data.length === 0)
-      throw "No data loaded";
-    });
-  });
+/**
+ * Testing
+ * This is the generic file for calling all of the tests.
+ * It makes sure that everything is tested and explains each test.
+ */
 
 
 
-// Attempt to update the cache
-describe('drive.find()', function(){
+/**
+ * .load(callback)
+ * Makes sure that the data can be loaded
+ */
+require("./load");
 
-  // Retrieve the spreadsheet
-  drive.load();
+/**
+ * data.update(id)
+ * Updates the local data with the external spreadsheet
+ */
+require("./update");
 
-  // Retrieve the spreadsheet
-  it('should load all records', function(){
-    if (drive.find().length !== 6)
-      throw "Not all records were retrieved";
-    });
-  });
+/**
+ * .find(filter)
+ * Attempts to filter the database with different parameters
+ */
+require("./find");
 
+/**
+ * data.order(field, desc)
+ * Orders the data based on one field
+ */
+require("./order");
 
-
-// Attempt to update the cache
-describe('drive.find(filter)', function(){
-
-  // Retrieve the spreadsheet
-  drive.load();
-
-  // Retrieve the spreadsheet
-  it('should load first record', function(){
-    if (drive.find({ id: 1 }).length !== 1)
-      throw "Only one record should be found";
-    });
-
-  // Retrieve the spreadsheet
-  it('should load John record', function(){
-    if (drive.find({ firstname: "John" }).length !== 1)
-      throw "Only one record should be found";
-    });
-
-  // Retrieve the spreadsheet
-  it('should load Miller record', function(){
-    if (drive.find({ lastname: "Miller" }).length !== 1)
-      throw "Only one record should be found";
-    });
-  });
-
-
-
-// Attempt to update the cache
-describe('drive.find(complexfilter)', function(){
-
-  // Retrieve the spreadsheet
-  drive.load();
-
-  // Retrieve the spreadsheet
-  it('should load records with id > 4', function(){
-    var records = drive.find({ id: {$gt: 4} });
-    var none = records.filter(function(row){ return row.id <= 4; });
-    if (none.length > 0)
-      throw "There's some record smaller than 4";
-    });
-  });
-
-
-
-// Attempt to update the cache
-describe('sort', function(){
-
-  // Retrieve the spreadsheet
-  var collection = drive.load("test/db.json").find();
-
-  // Retrieve the spreadsheet
-  it('should sort by firstname', function(){
-
-    var people = collection.order("firstname");
-
-    if (people[0].firstname > people[1].firstname
-     || people[1].firstname > people[2].firstname
-     || people[2].firstname > people[3].firstname
-     || people[3].firstname > people[4].firstname)
-      throw "Should be ordered ascendent";
-    });
-
-  // Retrieve the spreadsheet
-  it('should sort by age desc', function(){
-
-    var people = collection.order("age", 1);
-
-    if (people[0].age < people[1].age
-     || people[1].age < people[2].age
-     || people[2].age < people[3].age
-     || people[3].age < people[4].age)
-      throw "Should be ordered descendent";
-    });
-  });
-
-
-
-// Attempt to update the cache
-describe('limit', function(){
-
-  // Retrieve the spreadsheet
-  var collection = drive.load("test/db.json").find();
-
-  // Retrieve the spreadsheet
-  it('should retrieve the first 2 elements', function(){
-
-    var people = collection.limit(0, 2);
-
-    if (people.length !== 2)
-      throw "Should retrieve only 2 people";
-    });
-
-  // Retrieve the spreadsheet
-  it('should retrieve the first 2 elements', function(){
-
-    var people = collection.limit(-2);
-
-    if (people.length !== 2)
-      throw "Should retrieve only 2 people";
-    });
-  });
+/**
+ * data.limit(begin, end)
+ * Limits the data retrieved
+ */
+require("./limit");

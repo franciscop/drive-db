@@ -119,11 +119,12 @@ drive.prototype.update = function(id, callback){
 	request(url, function(error, response, sheet){
 
 		// Store the response code
-		self.code = response.statusCode;
+		// 400 if there's no response at all (client error)
+		self.code = (response) ? response.statusCode : 400;
 
 		// If it's an error code
 		if (self.code >= 400) {
-			self.error = response.body;
+			self.error = (response) ? response.body : "No internet connection";
 			self.store();
 			return false;
 			}

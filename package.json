@@ -1,6 +1,6 @@
 {
   "name": "drive-db",
-  "version": "1.5.2",
+  "version": "1.5.3",
   "description": "A simple google drive spreadsheet database",
   "main": "index.js",
   "scripts": {
