@@ -109,17 +109,20 @@ drive.prototype.load = function(cachePath){
  */
 drive.prototype.update = function(id, callback){
 
-	// The function to be called after the data is loaded
-	this.after = callback || this.after;
-
 	// Store the id from google drive spreadsheet
 	this.id = id || this.id;
 
+	// The function to be called after the data is loaded
+	this.after = callback || this.after;
+
+	// To update the data we need to make sure we're working with an id
 	if (!this.id.length)
 		throw 'Need a google drive url to update file';
 
+	// Build the url
 	var url = 'https://spreadsheets.google.com/feeds/list/' + id + '/od6/public/values?alt=json';
 
+	// http://stackoverflow.com/questions/962033/what-underlies-this-javascript-idiom-var-self-this
 	var self = this;
 
 	// Call request() but keep this as `drive`
