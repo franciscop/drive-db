@@ -48,6 +48,16 @@ To get the right google drive spreadsheet:
     
         drive.update("1fvz34wY6phWDJsuIneqvOoZRPfo6CfJyPg1BYgHt59k");
 
+Note: the table has to have a structure similar to this, where the first row are the fields and shold be alphanumeric:
+
+| id | firstname | lastname | age | city          |
+|----|-----------|----------|-----|---------------|
+| 1  | John      | Smith    | 34  | San Francisco |
+| 2  | Mery      | Johnson  | 19  | Tokyo         |
+| 3  | Peter     | Williams | 45  | London        |
+
+See [this document](https://docs.google.com/spreadsheets/d/1fvz34wY6phWDJsuIneqvOoZRPfo6CfJyPg1BYgHt59k/edit#gid=0) as an example
+
 
 ## Test
 
