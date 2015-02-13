@@ -48,7 +48,7 @@ To get the right google drive spreadsheet:
     
         drive.update("1fvz34wY6phWDJsuIneqvOoZRPfo6CfJyPg1BYgHt59k");
 
-Note: the table has to have a structure similar to this, where the first row are the fields and shold be alphanumeric:
+Note: the table has to have a structure similar to this, where the first row are the alphanumeric field names:
 
 | id | firstname | lastname | age | city          |
 |----|-----------|----------|-----|---------------|
