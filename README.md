@@ -1,6 +1,6 @@
 # drive-db
 
-A Google Drive spreadsheet simple database. Stop wasting your time when a simple table is enough. Perfect for collaboration with multiple people editing the same table.
+A Google Drive spreadsheet simple database. Stop wasting your time when a simple table is enough. Perfect for collaboration with multiple people editing the same spreadsheet.
 
 
 
@@ -20,7 +20,7 @@ To update the data asynchronously, call next code. Update it whenever you want, 
     // Update the local data (async)
     drive.update("1BfDC-ryuqahvAVKFpu21KytkBWsFDSV4clNex4F1AXc");
 
-You can perform `find()` queries like mongoDB's [comparison query operators](http://docs.mongodb.org/manual/reference/operator/query-comparison/) after you have called `.load()` (otherwise you have nothing to find):
+You can perform `find()` queries like mongoDB's [comparison query operators](http://docs.mongodb.org/manual/reference/operator/query-comparison/) after calling `.load()`:
 
     // Return an array with one element that has the id 3
     drive.find({ id: 3 });  
@@ -47,7 +47,6 @@ To get the right google drive spreadsheet:
 - Use this inside `update()`
     
         drive.update("1fvz34wY6phWDJsuIneqvOoZRPfo6CfJyPg1BYgHt59k");
-
 
 
 ## Test
