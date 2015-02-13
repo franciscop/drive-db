@@ -21,6 +21,14 @@ drive.prototype.cachePath = 'db.json';
 
 
 /**
+ * id
+ * The id of the Spreadsheet
+ */
+drive.prototype.id = '';
+
+
+
+/**
  * Info
  * Variable that contains the database information
  */
@@ -101,14 +109,13 @@ drive.prototype.load = function(cachePath){
  */
 drive.prototype.update = function(id, callback){
 
-	this.after = callback ? callback : this.after;
+	// The function to be called after the data is loaded
+	this.after = callback || this.after;
 
-	// Store the url from google drive
-	if (id) {
-		this.id = id;
-		}
+	// Store the id from google drive spreadsheet
+	this.id = id || this.id;
 
-	if (!this.id)
+	if (!this.id.length)
 		throw 'Need a google drive url to update file';
 
 	var url = 'https://spreadsheets.google.com/feeds/list/' + id + '/od6/public/values?alt=json';
