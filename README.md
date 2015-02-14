@@ -38,7 +38,7 @@ You can perform `find()` queries like mongoDB's [comparison query operators](htt
 
 To get the right google drive spreadsheet:
 
-- Create the spreadsheet
+- Create a spreadsheet
 - File > Publish to the Web > Publish
 - Copy the id between `/spreadsheets/` and `/edit` in the url:
     
@@ -77,15 +77,17 @@ Areas where I'm seeking for help:
 
 ## Release history
 
-- 2.0 [future] finish battle testing it, full test coverage and proper documentation.
-- 1.6 [future] added the `limit()` function.
+- 2.0 [future] finish battle testing it, full test coverage and proper documentation. Delete old code.
+- ...
+- 1.6 Added the `limit()` function. Tests are modular and easy to do/deploy
 - 1.5 Gave the `info` to the global object instead of a sub-object. Stored the error and code from the update in the db. Added the method `order()` for the array from `find()`.
 - 1.4 Changed the way it works internally from url to spreadsheet id.
-- 1.3  Stopped `require('drive-db')` from calling `.load()` automatically. The DB might me elsewhere. There's always an `.after` function.
+- 1.3 Stopped `require('drive-db')` from calling `.load()` automatically. The DB might me elsewhere. There's always an `.after` function.
 - 1.2 Changed several things. Created `documentation.md`, which should be up to date to keep up with the changes.
 - 1.1 Changed the parameter inside `load()`. Now it's the file where the cache is stored.
-- 1.0.0 First release
+- 1.0 First release
 
-Thanks
+
+## Thanks to
 
 - [Creating and publishing a node.js module](https://quickleft.com/blog/creating-and-publishing-a-node-js-module/)
