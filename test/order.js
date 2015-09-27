@@ -2,13 +2,10 @@
 var should = require('chai').should();
 
 // Load the class to test
-var drive = require('../index').load();
+var drive = require('../index')();
 
 // Overload the data with a known set
 drive.data = require('./data.js');
-
-// Retrieve the data
-var data = drive.find();
 
 
 
@@ -20,7 +17,7 @@ describe('data.order(field)', function(){
   // Retrieve the spreadsheet
   it('should sort by firstname', function(){
 
-    var people = data.order("firstname");
+    var people = drive.find().order("firstname");
 
     if (people[0].firstname > people[1].firstname
      || people[1].firstname > people[2].firstname
@@ -36,7 +33,7 @@ describe('data.order(field, 1)', function(){
   // Retrieve the spreadsheet
   it('should sort by age desc', function(){
 
-    var people = data.order("age", 1);
+    var people = drive.find().order("age", 1);
 
     if (people[0].age < people[1].age
      || people[1].age < people[2].age

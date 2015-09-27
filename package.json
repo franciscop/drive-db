@@ -4,7 +4,7 @@
   "description": "A simple google drive spreadsheet database",
   "main": "index.js",
   "scripts": {
-    "test": "make test"
+    "test": "mocha ./test/index.js"
   },
   "repository": {
     "type": "git",
@@ -22,7 +22,7 @@
   "licenses": [{
       "type": "MIT",
       "url": "https://github.com/brentertz/scapegoat/blob/master/LICENSE-MIT"
-    }], 
+    }],
   "bugs": {
     "url": "https://github.com/FranciscoP/drive-db/issues"
   },

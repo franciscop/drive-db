@@ -4,34 +4,24 @@
  * It makes sure that everything is tested and explains each test.
  */
 
+// Simply to cache and not making the first test take forever
+var justToCache = require('../index');
 
 
-/**
- * .load(callback)
- * Makes sure that the data can be loaded
- */
-require("./load");
+// Make sure that the module can be loaded
+require("./require");
 
-/**
- * data.update(id)
- * Updates the local data with the external spreadsheet
- */
-require("./update");
+// Make sure that the local database can be read
+require("./read");
 
-/**
- * .find(filter)
- * Attempts to filter the database with different parameters
- */
-require("./find");
+// Update the local data with the external spreadsheet
+require('./update');
 
-/**
- * data.order(field, desc)
- * Orders the data based on one field
- */
-require("./order");
+// Find some records
+require('./find');
 
-/**
- * data.limit(begin, end)
- * Limits the data retrieved
- */
-require("./limit");
+// Find some records
+require('./limit');
+
+// Find some records
+require('./order');

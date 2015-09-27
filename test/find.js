@@ -1,18 +1,21 @@
-// Load the testing module
-var should = require('chai').should();
+/* jshint expr:true */
+var chai = require('chai');
+var should = chai.should();
+var expect = chai.expect;
+var fs = require('fs');
+var drive = require('../index')();
 
-// Load the class to test
-var drive = require('../index').load();
-
-// Overload the data with a known set
-drive.data = require('./data.js');
+// Testing that we are able to load the library
+describe("drive.find()", function(){
 
 
+  before(function(done){
+    // Overload the data with a known set
+    drive.data = require('./data.js');
+    done();
+  });
 
-// Actual tests
 
-// Find all data
-describe('drive.find()', function(){
 
   // Retrieve the spreadsheet
   it('should load all records', function(){
@@ -25,9 +28,6 @@ describe('drive.find()', function(){
 
 // Attempt to update the cache
 describe('drive.find(filter)', function(){
-
-  // Retrieve the spreadsheet
-  drive.load();
 
   // Retrieve the spreadsheet
   it('should load first record', function(){
@@ -52,10 +52,7 @@ describe('drive.find(filter)', function(){
 
 // Attempt to update the cache
 describe('drive.find(complexfilter)', function(){
-
-  // Retrieve the spreadsheet
-  drive.load();
-
+  
   // Retrieve the spreadsheet
   it('should load records with id > 4', function(){
     var records = drive.find({ id: {$gt: 4} });

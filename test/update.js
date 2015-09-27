@@ -1,56 +1,41 @@
-// Load the testing module
-var should = require('chai').should();
-
-// Load the class to test
-var drive = require('../index').load();
-
-// Overload the data with a known set
-drive.data = require('./data.js');
+/* jshint expr:true */
+var chai = require('chai');
+var should = chai.should();
+var expect = chai.expect;
+var fs = require('fs');
+var drive = require('../index')({ local: "test/db.json" });
 
 
 
-// Actual tests
-
-// Attempt to update the cache
-describe('drive.update(id, callback)', function(){
+describe('updating the local cache', function(){
 
   it('should update the db', function(done){
 
-    drive.load("test/db.json");
-
     // Retrieve the spreadsheet
-    drive.update("1BfDC-ryuqahvAVKFpu21KytkBWsFDSV4clNex4F1AXc", function(data){
+    require('../index')().update("1BfDC-ryuqahvAVKFpu21KytkBWsFDSV4clNex4F1AXc", "test/db.json", function(err, db){
+      expect(db.data).to.be.not.empty;
+
+      var edited = new Date(fs.statSync('./test/db.json').mtime).getTime();
+      expect(edited).below(new Date().getTime());
+      expect(edited + 100).to.be.above(new Date().getTime());
       done();
-      return data;
       });
     });
 
-  it('should store an error', function(done){
+  it('gives error for wrong google id', function(done){
 
-    drive.load("test/error.json");
-
-    // Retrieve the spreadsheet
-    drive.update("wrong-id");
-
-    setTimeout(function(){
-      if(!drive.error)
-        throw "Error not stored";
+    require('../index')().update("wrong-id", null, function(err, db){
+      expect(err).to.be.instanceof(Error);
       done();
-      }, 1500);
-    });
-  
-  // Check on the retrieved data
-  after(function(){
-
-    // Retrieve the spreadsheet
-    drive.load();
-
-    // Make sure we have some info
-    if (drive.info.length === 0)
-      throw "No info stored";
-
-    // Make sure there's something returned
-    if (drive.data.length === 0)
-      throw "No data loaded";
     });
   });
+
+  it('requires a google id', function(done){
+
+    require('../index')().update(null, null, function(err, db){
+      expect(err).to.be.not.null;
+      done();
+    });
+  });
+
+});
