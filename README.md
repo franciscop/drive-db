@@ -51,7 +51,7 @@ To get the right google drive spreadsheet:
 require('drive-db')("1fvz34wY6phWDJsuIneqvOoZRPfo6CfJyPg1BYgHt59k");
 
 // If you want to add more options
-require('drive-db')({ sheet: "1fvz34wY6phWDJsuIneqvOoZRPfo6CfJyPg1BYgHt59k", db: 'db.json' });
+require('drive-db')({ sheet: "1fvz34wY6phWDJsuIneqvOoZRPfo6CfJyPg1BYgHt59k" });
 
 // Load it later on
 var drive = require('drive-db')();
@@ -66,7 +66,7 @@ Note: the table has to have a structure similar to this, where the first row are
 | 2  | Mery      | Johnson  | 19  | Tokyo         |
 | 3  | Peter     | Williams | 45  | London        |
 
-See [this document](https://docs.google.com/spreadsheets/d/1fvz34wY6phWDJsuIneqvOoZRPfo6CfJyPg1BYgHt59k/edit#gid=0) as an example
+See [this document](https://docs.google.com/spreadsheets/d/1fvz34wY6phWDJsuIneqvOoZRPfo6CfJyPg1BYgHt59k/edit#gid=0) as an example. Note: please do not request access to edit it
 
 
 ## Test
