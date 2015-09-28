@@ -96,12 +96,12 @@ Sort the data by the given field. It sorts it in an ascendant order. Pass a seco
 
 ```js
 // Ascendant order
-var people = drive.find().order('firstname');
+var people = db.find().order('firstname');
 
 // Descedant order
-var inversepeople = drive.find().order('firstname', true);
+var inversepeople = db.find().order('firstname', true);
 
-var smiths = drive.find({ lastname: "Smith" }).order('firstname');
+var smiths = db.find({ lastname: "Smith" }).order('firstname');
 ```
 
 
@@ -113,16 +113,16 @@ Limit the data that can be retrieved. It should be applied to the returning arra
 
 ```js
 // Limit the set to the first 10 elements
-drive.find().limit(0, 10);
+db.find().limit(0, 10);
 
 // Retrieve the next 10 elements (pagination, infinite scroll, etc)
-drive.find().limit(10, 20);
+db.find().limit(10, 20);
 
 // Retrieves the last 2 elements
-drive.find().limit(-2);
+db.find().limit(-2);
 
 // Order the query and limit it
-drive.find().sort("firstname").limit(0, 10);
+db.find().sort("firstname").limit(0, 10);
 ```
 
 
@@ -147,7 +147,7 @@ drive.update("1fvz34wY6phWDJsuIneqvOoZRPfo6CfJyPg1BYgHt59k", "db.json", function
 All of the arguments of this function are optional, but if you want to avoid some you should pass a `false` value:
 
 ```js
-var drive = require('drive-db')({ sheet: "1fvz34wY6phWDJsuIneqvOoZRPfo6CfJyPg1BYgHt59k" });
+var drive = require('drive-db')("1fvz34wY6phWDJsuIneqvOoZRPfo6CfJyPg1BYgHt59k");
 drive.update(false, 'data.json');
 ```
 
