@@ -38,7 +38,7 @@ npm install drive-db --save
 
 To get the right google drive spreadsheet:
 
-- Create a spreadsheet
+- Create [a Google Spreadsheet](https://www.google.com/sheets/about/)
 - File > Publish to the Web > Publish
 - Copy the id between `/spreadsheets/` and `/edit` in the url:
 
