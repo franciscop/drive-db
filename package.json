@@ -1,7 +1,7 @@
 {
   "name": "drive-db",
-  "version": "1.6.0",
-  "description": "A simple google drive spreadsheet database",
+  "version": "2.0.0",
+  "description": "A simple google drive spreadsheet database with mongodb interface",
   "main": "index.js",
   "scripts": {
     "test": "mocha ./test/index.js"
@@ -16,19 +16,17 @@
     "database",
     "db",
     "table",
-    "spreadsheet"
+    "spreadsheet",
+    "mongodb"
   ],
-  "author": "Francisco Presencia Fandos",
-  "licenses": [{
-      "type": "MIT",
-      "url": "https://github.com/brentertz/scapegoat/blob/master/LICENSE-MIT"
-    }],
+  "author": "Francisco Presencia Fandos <publicfrancisco@hotmail.com> (http://francisco.io/)",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/FranciscoP/drive-db/issues"
   },
   "homepage": "https://github.com/FranciscoP/drive-db",
   "dependencies": {
-    "request": "^2.51.0"
+    "request": "^2.64.0"
   },
   "devDependencies": {
     "chai": "^1.10.0",
