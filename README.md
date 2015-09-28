@@ -49,7 +49,7 @@ To get the right google drive spreadsheet:
 
     > [https://docs.google.com/spreadsheets/d/<strong>1fvz34wY6phWDJsuIneqvOoZRPfo6CfJyPg1BYgHt59k</strong>/edit#gid=0](https://docs.google.com/spreadsheets/d/1fvz34wY6phWDJsuIneqvOoZRPfo6CfJyPg1BYgHt59k/edit#gid=0)
 
-- Use this inside `the require('drive-db')` in any of the following ways:
+- Use this with the module in any of the following ways:
 
 ```js
 // Single argument can be passed as that

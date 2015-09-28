@@ -21,22 +21,17 @@ module.exports = function(options){
     data: []
   };
 
-  drive.load = function(sheet, callback){
+  drive.load = function(callback){
 
-    if (typeof(sheet) === "function") {
-      callback = sheet || function(){};
-    }
-    else {
-      // Make sure we're working with the intended spreadsheet
-      this.sheet = sheet || this.sheet;
-      callback = callback || function(){};
-    }
+    callback = callback || function(){};
 
     // Make sure we're not extending the maximum timeout
     function diff(file) {
       var filetime = new Date(fs.statSync(file).mtime).getTime();
       return (new Date().getTime() - filetime) / 1000;
     }
+
+    // If the timeout has expired or there's no local copy
     if (!fs.existsSync(this.local) || diff(this.local) > this.timeout) {
       return this.update(this.sheet, this.local, callback);
     }
@@ -51,6 +46,7 @@ module.exports = function(options){
 
     // Set the cachePath
     this.local = local || this.local;
+    callback = callback || function(){};
 
     var self = this;
 
@@ -75,6 +71,7 @@ module.exports = function(options){
 
     this.sheet = sheet || this.sheet;
     this.local = local || this.local;
+    callback = callback || function(){};
 
     // To update the data we need to make sure we're working with an id
     if (!this.sheet.length) {
@@ -109,20 +106,21 @@ module.exports = function(options){
       self.data = self.onload.call(self, self.data);
 
       // Actually save the data into the file
-      self.store();
+      // It is okay that this is async but ignored
+      self.store(self.local, self.data);
 
       callback(false, self);
     });
   };
 
 
-  drive.store = function(){
+  drive.store = function(file, data){
 
     // The data to store
-    var save = JSON.stringify(this.data, null, 2);
+    var save = JSON.stringify(data, null, 2);
 
     // Write the cache
-    fs.writeFile(this.local, save);
+    fs.writeFile(file, save);
   };
 
   drive.parse = function(raw) {

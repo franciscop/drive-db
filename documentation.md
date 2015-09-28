@@ -47,7 +47,7 @@ var drive = require('drive-db')({
 
 - `sheet`: set the spreadsheet id. Read the previous point
 - `db`: set the local db name relative to the root
-- `timeout`: set the maximum time (in seconds) that the current cache is valid. After this, the data will be loaded again
+- `timeout`: set the maximum time (in seconds) that the current cache is valid. After this, the data will be loaded again when the function is called. This is really useful when combined with development env variable. Set to 0 to refresh in each request.
 - `onload`: a function that sets a transformation between the data of the spreadsheet and the local db. It accepts the whole array and must return the whole modified array and it's useful to avoid doing the operations on each request
 
 These options can also be loaded at any point after loading the module. Here with the defaults again:
@@ -94,6 +94,7 @@ Retrieve data from the database. If there's no filter, the whole spreadsheet wil
 
 Sort the data by the given field. It sorts it in an ascendant order. Pass a second parameter as true and it will sort it in a descendant order. It should be called **after** `.find()`. Examples:
 
+```js
 // Ascendant order
 var people = drive.find().order('firstname');
 
@@ -101,7 +102,7 @@ var people = drive.find().order('firstname');
 var inversepeople = drive.find().order('firstname', true);
 
 var smiths = drive.find({ lastname: "Smith" }).order('firstname');
-
+```
 
 
 ## .limit(begin, end)
@@ -110,14 +111,53 @@ var smiths = drive.find({ lastname: "Smith" }).order('firstname');
 
 Limit the data that can be retrieved. It should be applied to the returning array from `.find()`, and not before:
 
-    // Limit the set to the first 10 elements
-    drive.find().limit(0, 10);
+```js
+// Limit the set to the first 10 elements
+drive.find().limit(0, 10);
 
-    // Retrieve the next 10 elements (pagination, infinite scroll, etc)
-    drive.find().limit(10, 20);
+// Retrieve the next 10 elements (pagination, infinite scroll, etc)
+drive.find().limit(10, 20);
 
-    // Retrieves the last 2 elements
-    drive.find().limit(-2);
+// Retrieves the last 2 elements
+drive.find().limit(-2);
 
-    // Order the query and limit it
-    drive.find().sort("firstname").limit(0, 10);
+// Order the query and limit it
+drive.find().sort("firstname").limit(0, 10);
+```
+
+
+## Advanced
+
+There are some more advanced things that you might consider. While I recommend you to read the code for this, here are a couple of examples.
+
+### Refresh the cache
+
+While the default method `.load(callback)` only retrieves the remote data if the timeout has expired, you can force a data refresh with the `.update()` command. It accepts three arguments:
+
+```js
+drive.update(SHEET_ID, LOCAL_DB_NAME, callback());
+
+// Example
+drive.update("1fvz34wY6phWDJsuIneqvOoZRPfo6CfJyPg1BYgHt59k", "db.json", function(err, db){
+  if (err) return console.log("Error updating the local copy");
+  console.log("Local copy updated and data loaded in db");
+});
+```
+
+All of the arguments of this function are optional, but if you want to avoid some you should pass a `false` value:
+
+```js
+var drive = require('drive-db')({ sheet: "1fvz34wY6phWDJsuIneqvOoZRPfo6CfJyPg1BYgHt59k" });
+drive.update(false, 'data.json');
+```
+
+### Load locally
+
+If you just want to load a local json with search capabilities, you might also do so with `readDB()`. It accepts two arguments, the local file and the callback to be used when finished parsing:
+
+```js
+drive.readDB('db.json', function(err, db){
+  if (err) return console.log("Error reading local json");
+  console.log("Local file loaded properly");
+});
+```
