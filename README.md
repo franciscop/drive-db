@@ -5,7 +5,7 @@ A Google Drive spreadsheet simple database. Stop wasting your time when a simple
 
 ## Usage
 
-To access it you just need to provide the sheet id. Read more in [**the full documentation**](https://github.com/franciscop/drive-db/blob/master/documentation.md), but here's an example:
+To access it with the default configuration you just need to provide the Google Drive's sheet id. Read more in [**the full documentation**](https://github.com/franciscop/drive-db/blob/master/documentation.md), but here's an example:
 
 ```js
 // Include the module and tell it which spreadsheet to use
