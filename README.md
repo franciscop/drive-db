@@ -5,21 +5,19 @@ A Google Drive spreadsheet simple database. Stop wasting your time when a simple
 
 ## Usage
 
-It loads data from a Google Drive spreadsheet. It stores a local copy for super-fast access, and can be updated either when you want or when a timeout between updates is exceeded. The simplest case is this:
+To access it you just need to provide the sheet id. Read more in [**the full documentation**](https://github.com/franciscop/drive-db/blob/master/documentation.md), but here's an example:
 
 ```js
 // Include the module and tell it which spreadsheet to use
 var drive = require("drive-db")("1BfDC-ryuqahvAVKFpu21KytkBWsFDSV4clNex4F1AXc");
 
 // Load the spreadsheet
-var Johns = drive.load(function(err, db){
+drive.load(function(err, db){
 
   // Find all Johns by their last name
-  db.find({ firstname: "John" }).order('lastname');
+  var Johns = db.find({ firstname: "John" }).order('lastname');
 });
 ```
-
-Read more in [**the documentation**](https://github.com/franciscop/drive-db/blob/master/documentation.md).
 
 The `db.find()` queries are the same as in mongoDB's [comparison query operators](http://docs.mongodb.org/manual/reference/operator/query-comparison/):
 
