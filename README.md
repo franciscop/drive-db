@@ -21,7 +21,7 @@ var Johns = drive.load(function(err, db){
 
 Read more in [**the documentation**](https://github.com/franciscop/drive-db/blob/master/documentation.md).
 
-The `find()` queries are the same as in mongoDB's [comparison query operators](http://docs.mongodb.org/manual/reference/operator/query-comparison/) after calling `.load()`:
+The `db.find()` queries are the same as in mongoDB's [comparison query operators](http://docs.mongodb.org/manual/reference/operator/query-comparison/):
 
 ```js
 // Return an array with one element that has the id 3
@@ -29,9 +29,6 @@ db.find({ id: 3 });
 
 // Return an array of people called "John" or "Jack"
 db.find({ firstname: { $in: ["John", "Jack"]] } });
-
-// Return an array with everyone but "John"
-db.find({ firstname: { $ne: "John" } });
 ```
 
 
