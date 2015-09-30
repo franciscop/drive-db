@@ -1,25 +1,22 @@
 // Required modules
 var fs = require('fs');
 var request = require('request');
-
+var defaults = require('defaults');
 
 
 module.exports = function(options){
 
-  // Make sure we have some options
-  options = options || {};
+  // Also accepts a single argument as sheet id
+  options = typeof options === "string" ? { sheet: options } : options;
 
-  // As recommended in http://stackoverflow.com/a/9436948/938236
-  if (typeof options === 'string' || options instanceof String)
-    options = { sheet: options };
-
-  var drive = {
-    sheet: options.sheet || false,     // the sheet id
-    local: options.local || 'db.json', // where the local copy is stored
-    timeout: options.timeout || 3600,  // maximum time until next reload in secs
-    onload: options.onload || function(d){ return d; },  // Function to call on each row
+  // Load the correct defaults
+  var drive = defaults(options, {
+    sheet: "",
+    local: "db.json",
+    timeout: 3600,
+    onload: function(d){ return d; },
     data: []
-  };
+  });
 
   drive.load = function(callback){
 
@@ -42,19 +39,17 @@ module.exports = function(options){
 
 
 
-  drive.readDB = function(local, callback){
-
-    // Set the cachePath
-    this.local = local || this.local;
-    callback = callback || function(){};
+  drive.readDB = function(file, callback){
 
     var self = this;
+    callback = callback || function(){};
 
     // Read the raw db into a variable
-    fs.readFile(process.cwd() + '/' + this.local, 'utf-8', function(err, rawJson){
+    fs.readFile(process.cwd() + '/' + file, 'utf-8', function(err, rawJson){
 
-      if (err)
+      if (err) {
         return callback(err);
+      }
 
       // Store it in a decent way
       try {
@@ -67,22 +62,19 @@ module.exports = function(options){
     });
   };
 
-  drive.update = function(sheet, local, callback){
-
-    this.sheet = sheet || this.sheet;
-    this.local = local || this.local;
-    callback = callback || function(){};
-
-    // To update the data we need to make sure we're working with an id
-    if (!this.sheet.length) {
-      return callback(new Error('Need a google drive url to update file'));
-    }
+  drive.update = function(sheet, file, callback){
 
     // http://stackoverflow.com/questions/962033/what-underlies-this-javascript-idiom-var-self-this
     var self = this;
+    callback = callback || function(){};
+
+    // To update the data we need to make sure we're working with an id
+    if (!sheet || !sheet.length) {
+      return callback(new Error('Need a google drive url to update file'));
+    }
 
     // Build the url
-    var url = 'https://spreadsheets.google.com/feeds/list/' + this.sheet + '/od6/public/values?alt=json';
+    var url = 'https://spreadsheets.google.com/feeds/list/' + sheet + '/od6/public/values?alt=json';
 
     // Call request() but keep this as `drive`
     request(url, function(err, response, sheet){
@@ -93,7 +85,7 @@ module.exports = function(options){
       }
 
       // The server returned an error (but nothing failed)
-      if (!response || response.statusCode >= 400) {
+      if (response.statusCode >= 400) {
         return callback(new Error(response.statusMessage));
         }
 
@@ -105,31 +97,18 @@ module.exports = function(options){
       // Call the function that should be called after retrieving the data
       self.data = self.onload.call(self, self.data);
 
-      // Actually save the data into the file
-      // It is okay that this is async but ignored
-      self.store(self.local, self.data);
-
       callback(false, self);
+
+      // Actually save the data into the file
+      fs.writeFile(file, JSON.stringify(self.data, null, 2));
     });
   };
 
-
-  drive.store = function(file, data){
-
-    // The data to store
-    var save = JSON.stringify(data, null, 2);
-
-    // Write the cache
-    fs.writeFile(file, save);
-  };
-
+  // Parse the JSON from drive
   drive.parse = function(raw) {
 
-    // Get the json from google drive
-    var rawrows = JSON.parse(raw).feed.entry;
-
-    // Loop through each row
-    var data = rawrows.map(function(row){
+    // Get the json from google drive and loop it
+    return JSON.parse(raw).feed.entry.map(function(row){
 
       var entry = {};
 
@@ -150,8 +129,6 @@ module.exports = function(options){
       // Return it anyway
       return entry;
     });
-
-    return data;
   };
 
 
@@ -165,7 +142,7 @@ module.exports = function(options){
      "$lt" : function(value, test){ return value <  test; },
      "$lte": function(value, test){ return value <= test; },
      "$ne" : function(value, test){ return value != test; },
-       // http://stackoverflow.com/a/20206734
+       // Loose type search: http://stackoverflow.com/a/20206734
      "$in" : function(value, test){
        return test.map(String).indexOf(value) > -1;
        },
@@ -182,22 +159,21 @@ module.exports = function(options){
      // Comparing two primitive types
      if (typeof test !== 'object') {
        return (test == value);
-       }
+     }
 
      // Loop each possible condition
      for (var name in conditions) {
 
        // If the filter has this test and it's not passed
-       if (conditions.hasOwnProperty(name) &&
-           test.hasOwnProperty(name) &&
+       if (name in conditions && name in test &&
            !conditions[name](value, test[name])) {
          return false;
-         }
        }
+     }
 
      // All the tests for the complex filter have passed
      return true;
-     }
+   }
 
 
 
@@ -208,33 +184,23 @@ module.exports = function(options){
     // Allow for simplification when calling it
     filter = (typeof filter == 'string') ? { id: filter } : filter;
 
-    // Loop through all of the rows
-    // Store the good ones here
-    var passed = this.data.map(function(row){
+    // Loop through all of the rows. Store the good ones here
+    var passed = this.data.filter(function(row){
 
       // Loop through all of the tests
       for (var field in filter) {
 
         // Make sure we're dealing with a filter field
-        if (filter.hasOwnProperty(field)) {
+        if (field in row && !good(row[field], filter[field])) {
 
-          // If one of the tests fails
-          if (!good(row[field], filter[field])) {
-
-            // The whole row fails
-            return false;
-            }
-          }
+          // The whole row fails
+          return false;
         }
+      }
 
       // Everything okay: this row passed all the tests!
-      return row;
-      });
-
-    // http://stackoverflow.com/a/2843625
-    passed = passed.filter(function(row){
-      return (row !== undefined && row !== null && row !== false);
-      });
+      return true;
+    });
 
     // This has been called `order` since Array already has a function called `sort`
     passed.order = function(field, desc){
@@ -242,15 +208,11 @@ module.exports = function(options){
       // Inverse the order of the sort
       var inv = (desc) ? -1 : 1;
 
-      // Compare two fields
-      function compare(a, b) {
-
-        return (a[field] == b[field]) ? 0 :
-          (a[field] > b[field]) ? inv : - inv;
-        }
-
       // Actually sort the data
-      this.sort(compare);
+      this.sort(function(a, b) {
+
+        return (a[field] == b[field]) ? 0 : (a[field] > b[field]) ? inv : - inv;
+      });
 
       return this;
     };
@@ -259,7 +221,7 @@ module.exports = function(options){
     passed.limit = passed.slice;
 
     return passed;
-    };
+  };
 
   return drive;
 };

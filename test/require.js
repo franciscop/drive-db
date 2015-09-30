@@ -34,6 +34,8 @@ describe("including the library", function(){
     // Load the data
     var drive = require('../index')('abc');
 
+
+    console.log(drive);
     expect(drive.sheet).to.equal('abc');
   });
 

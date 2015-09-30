@@ -13,11 +13,12 @@ describe('updating the local cache', function(){
 
     // Retrieve the spreadsheet
     require('../index')().update("1BfDC-ryuqahvAVKFpu21KytkBWsFDSV4clNex4F1AXc", "test/db.json", function(err, db){
+      if (err) throw err;
       expect(db.data).to.be.not.empty;
 
       var edited = new Date(fs.statSync('./test/db.json').mtime).getTime();
       expect(edited).below(new Date().getTime());
-      expect(edited + 100).to.be.above(new Date().getTime());
+      expect(edited + 1000).to.be.above(new Date().getTime());
       done();
       });
     });

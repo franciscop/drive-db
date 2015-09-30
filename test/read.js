@@ -21,7 +21,7 @@ describe("reading a local db", function(){
 
     var drive = require('../index')({ local: 'test/db.json' });
     expect(drive.data).to.be.empty;
-    drive.readDB(null, function(err, db){
+    drive.readDB("test/db.json", function(err, db){
       expect(db.data).to.be.instanceof(Array);
       expect(db.data).to.be.not.empty;
       done();
