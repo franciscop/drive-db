@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/franciscop/drive-db.svg)](https://travis-ci.org/franciscop/drive-db)
-[![Coverage Status](https://coveralls.io/repos/franciscop/drive-db/badge.svg?branch=master&service=github)](https://coveralls.io/github/franciscop/drive-db?branch=master)
+[![Coverage Status](https://coveralls.io/repos/franciscop/drive-db/badge.svg?branch=master)](https://coveralls.io/github/franciscop/drive-db?branch=master)
 
 
 # drive-db
