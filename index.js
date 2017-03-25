@@ -20,8 +20,6 @@ module.exports = function(options){
 
   drive.load = function(callback){
 
-    callback = callback || function(){};
-
     // Make sure we're not extending the maximum timeout
     function diff(file) {
       var filetime = new Date(fs.statSync(file).mtime).getTime();
@@ -42,23 +40,26 @@ module.exports = function(options){
   drive.readDB = function(file, callback){
 
     var self = this;
-    callback = callback || function(){};
 
-    // Read the raw db into a variable
-    fs.readFile(process.cwd() + '/' + file, 'utf-8', function(err, rawJson){
+    return new Promise((resolve, reject) => {
+      // Read the raw db into a variable
+      fs.readFile(process.cwd() + '/' + file, 'utf-8', function(err, rawJson){
 
-      if (err) {
-        return callback(err);
-      }
-
-      // Store it in a decent way
-      try {
-        self.data = JSON.parse(rawJson);
-        return callback(false, self);
+        if (err) {
+          if (callback) return callback(err);
+          return reject(err);
         }
-      catch(error) {
-        return callback(error);
+
+        // Store it in a decent way
+        try {
+          self.data = JSON.parse(rawJson);
+          if (callback) return callback(false, self);
+          return resolve(self);
+        } catch(error) {
+          if (callback) return callback(error);
+          return reject(error);
         }
+      });
     });
   };
 
@@ -66,41 +67,48 @@ module.exports = function(options){
 
     // http://stackoverflow.com/questions/962033/what-underlies-this-javascript-idiom-var-self-this
     var self = this;
-    callback = callback || function(){};
 
-    // To update the data we need to make sure we're working with an id
-    if (!sheet || !sheet.length) {
-      return callback(new Error('Need a google drive url to update file'));
-    }
-
-    // Build the url
-    var url = 'https://spreadsheets.google.com/feeds/list/' + sheet + '/od6/public/values?alt=json';
-
-    // Call request() but keep this as `drive`
-    request(url, function(err, response, sheet){
-
-      // There's a explicit error
-      if (err) {
-        return callback(err);
+    return new Promise(function(resolve, reject) {
+      // To update the data we need to make sure we're working with an id
+      if (!sheet || !sheet.length) {
+        var err = new Error('Need a google drive url to update file');
+        if (callback) return callback(err);
+        return reject(err);
       }
 
-      // The server returned an error (but nothing failed)
-      if (response.statusCode >= 400) {
-        return callback(new Error(response.statusMessage));
+      // Build the url
+      var url = 'https://spreadsheets.google.com/feeds/list/' + sheet + '/od6/public/values?alt=json';
+
+      // Call request() but keep this as `drive`
+      request(url, function(err, response, sheet){
+
+        // There's a explicit error
+        if (err) {
+          if (callback) return callback(err);
+          return reject(err);
         }
 
-      // So that you can access this within self.after
-      self.data = self.parse(sheet).filter(function(el){
-        return el !== undefined;
+        // The server returned an error (but nothing failed)
+        if (response.statusCode >= 400) {
+          var err = new Error(response.statusMessage);
+          if (callback) return callback(err);
+          return reject(err);
+        }
+
+        // So that you can access this within self.after
+        self.data = self.parse(sheet).filter(function(el){
+          return el !== undefined;
+        });
+
+        // Call the function that should be called after retrieving the data
+        self.data = self.onload.call(self, self.data);
+
+        if (callback) callback(false, self);
+        else resolve(self);
+
+        // Actually save the data into the file
+        fs.writeFile(file, JSON.stringify(self.data, null, 2), () => {});
       });
-
-      // Call the function that should be called after retrieving the data
-      self.data = self.onload.call(self, self.data);
-
-      callback(false, self);
-
-      // Actually save the data into the file
-      fs.writeFile(file, JSON.stringify(self.data, null, 2));
     });
   };
 

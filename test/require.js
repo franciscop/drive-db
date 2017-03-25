@@ -58,8 +58,7 @@ describe("including the library", function(){
 
 
   // Make sure there's DB
-  it("can load a sheet provided in options", function(done){
-
+  it("gives an error without sheet", function(done){
     var drive = require('../index')();
     drive.load(function(err){
       expect(err).to.be.not.null;
@@ -67,27 +66,13 @@ describe("including the library", function(){
     });
   });
 
-
-
-  // Make sure there's DB
-  it("can load a sheet provided in the middle", function(done){
-
-    var drive = require('../index')();
-    drive.load(function(err){
-      expect(err).to.be.not.null;
-      done();
-    });
-  });
-
-
-
-  // Make sure there's DB
-  it("gives an error if we don't provide a sheet", function(done){
-
-    var drive = require('../index')();
-    drive.load(function(err){
-      expect(err).to.be.not.null;
-      done();
-    });
+  it("[async] gives an error without sheet", async () => {
+    const drive = require('../index')();
+    try {
+      const db = await drive.load();
+    } catch (err) {
+      return;
+    }
+    throw new Error('Should not get here');
   });
 });

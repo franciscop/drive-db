@@ -4,7 +4,7 @@
   "description": "A simple google drive spreadsheet database with mongodb interface",
   "main": "index.js",
   "scripts": {
-    "test": "mocha ./test/index.js"
+    "test": "mocha --trace-deprecation --harmony-async-await ./test/index.js"
   },
   "repository": {
     "type": "git",
