@@ -26,12 +26,13 @@
   },
   "homepage": "https://github.com/FranciscoP/drive-db",
   "dependencies": {
-    "coveralls": "^2.11.4",
     "defaults": "^1.0.2",
     "request": "^2.64.0"
   },
   "devDependencies": {
     "chai": "^1.10.0",
+    "coveralls": "^2.11.4",
+    "jest": "^19.0.2",
     "mocha": "^2.1.0"
   }
 }
