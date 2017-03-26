@@ -1,6 +1,3 @@
-// Load the testing module
-var should = require('chai').should();
-
 // Load the class to test
 var drive = require('../index')();
 
@@ -23,7 +20,7 @@ describe('data.order(field)', function(){
      || people[1].firstname > people[2].firstname
      || people[2].firstname > people[3].firstname
      || people[3].firstname > people[4].firstname)
-      throw "Should be ordered ascendent";
+      throw new Error("Should be ordered ascendent");
     });
   });
 
@@ -39,6 +36,6 @@ describe('data.order(field, 1)', function(){
      || people[1].age < people[2].age
      || people[2].age < people[3].age
      || people[3].age < people[4].age)
-      throw "Should be ordered descendent";
-    });
+      throw new Error("Should be ordered descendent");
   });
+});

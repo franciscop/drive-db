@@ -103,11 +103,11 @@ module.exports = function(options){
         // Call the function that should be called after retrieving the data
         self.data = self.onload.call(self, self.data);
 
-        if (callback) callback(false, self);
-        else resolve(self);
-
         // Actually save the data into the file
-        fs.writeFile(file, JSON.stringify(self.data, null, 2), () => {});
+        fs.writeFile(file, JSON.stringify(self.data, null, 2), () => {
+          if (callback) callback(false, self);
+          else resolve(self);
+        });
       });
     });
   };

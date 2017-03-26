@@ -1,43 +1,22 @@
 /* jshint expr:true */
-var chai = require('chai');
-var should = chai.should();
-var expect = chai.expect;
-
 
 // Testing that we are able to load the library
 describe("including the library", function(){
 
-
-
   it('is possible without initializing', function(){
-
     var drive = require('../index');
-
-    expect(drive).to.be.an.object;
+    expect(drive).toBeDefined();
   });
-
-
 
   it('can be loaded without options', function(){
-
     var drive = require('../index')();
-
-    expect(drive).to.be.an.object;
-
-    expect(drive).to.have.property('data');
+    expect(drive.data).toBeDefined();
   });
-
-
 
   it('can load a single option as the sheet', function(){
-
-    // Load the data
     var drive = require('../index')('abc');
-
-    expect(drive.sheet).to.equal('abc');
+    expect(drive.sheet).toBe('abc');
   });
-
-
 
   // Make sure there's DB
   it('can set all options', function(){
@@ -51,17 +30,15 @@ describe("including the library", function(){
     var drive = require('../index')(options);
 
     for (var name in options) {
-      expect(drive[name]).to.equal(options[name]);
+      expect(drive[name]).toEqual(options[name]);
     }
   });
-
-
 
   // Make sure there's DB
   it("gives an error without sheet", function(done){
     var drive = require('../index')();
     drive.load(function(err){
-      expect(err).to.be.not.null;
+      expect(err).toBeDefined();
       done();
     });
   });
