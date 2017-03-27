@@ -12,20 +12,20 @@ describe("reading a local db", function(){
     done();
   });
 
-  it('is possible', function(done){
+  it('can be performed', function(done){
     drive.readDB("test/db.json", function(err, db){
       expect(db.data).toEqual(jasmine.any(Array));
-      expect(db.data.length).not.toBe(0);
+      expect(db.data.length).toBeGreaterThan(0);
       // expect(db.data).to.be.instanceof(Array);
       // expect(db.data).to.be.not.empty;
       done();
     });
   });
 
-  it('[async] is possible', async () => {
+  it('[async] can be performed', async () => {
     const db = await drive.readDB('test/db.json');
     expect(db.data).toEqual(jasmine.any(Array));
-    expect(db.data.length).not.toBe(0);
+    expect(db.data.length).toBeGreaterThan(0);
     // expect(db.data).to.be.instanceof(Array);
     // expect(db.data).to.be.not.empty;
   });
