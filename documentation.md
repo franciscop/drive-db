@@ -42,14 +42,14 @@ require('drive-db')('1fvz34wY6phWDJsuIneqvOoZRPfo6CfJyPg1BYgHt59k');
 ```js
 const drive = require('drive-db')({
   sheet: '',
-  db: 'db.json',
+  local: 'db.json',
   cache: 3600,
   onload: data => data
 });
 ```
 
 - `sheet`: set the spreadsheet id. Read the previous point
-- `db`: set the local db name relative to the root
+- `local`: set the local db name relative to the root
 - `cache`: set the maximum time (in seconds) that the current cache is valid. After this, the data will be loaded again when the function is called. This is really useful when combined with development env constiable. Set to 0 to refresh in each request.
 - `onload`: a function that sets a transformation between the data of the spreadsheet and the local db. It accepts the whole array and must return the whole modified array and it's useful to avoid doing the operations on each request
 

@@ -1,6 +1,6 @@
 {
   "name": "drive-db",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "A simple google drive spreadsheet database with mongodb interface",
   "main": "index.js",
   "scripts": {
