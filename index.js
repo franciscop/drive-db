@@ -1,163 +1,117 @@
 // Required modules
-var fs = require('fs');
-var request = require('request');
-var defaults = require('defaults');
+const fs = require('fs-promise');
+const request = require('request-promises');
 
 
 module.exports = function(options){
 
   // Also accepts a single argument as sheet id
-  options = typeof options === "string" ? { sheet: options } : options;
+  options = typeof options === 'string' ? { sheet: options } : options;
 
   // Load the correct defaults
-  var drive = defaults(options, {
-    sheet: "",
-    local: "db.json",
-    timeout: 3600,
-    onload: function(d){ return d; },
+  const drive = Object.assign({}, {
+    sheet: '',
+    local: 'db.json',
+    cache: 3600,
+    onload: d => d,
     data: []
-  });
+  }, options);
 
-  drive.load = function(callback){
 
-    // Make sure we're not extending the maximum timeout
-    function diff(file) {
-      var filetime = new Date(fs.statSync(file).mtime).getTime();
-      return (new Date().getTime() - filetime) / 1000;
-    }
+
+  // Make sure we're not extending the maximum timeout
+  const diff = file => {
+    const filetime = new Date(fs.statSync(file).mtime).getTime();
+    return (new Date().getTime() - filetime) / 1000;
+  }
+
+
+
+  // The server returned an error (but nothing failed)
+  const statusCode = res => res.statusCode >= 400
+    ? Promise.reject(Error(res.statusMessage)) : res;
+
+
+
+  drive.load = function(){
 
     // If the timeout has expired or there's no local copy
-    if (!fs.existsSync(this.local) || diff(this.local) > this.timeout) {
-      return this.update(this.sheet, this.local, callback);
+    if (!fs.existsSync(this.local) || diff(this.local) > this.cache) {
+      return this.update(this.sheet, this.local);
     }
 
-    // It was updated recently, just load it
-    return this.readDB(this.local, callback);
+    // Fetch it from the filesystem
+    return this.readDB(this.local);
   };
 
 
 
-  drive.readDB = function(file, callback){
-
-    var self = this;
-
-    return new Promise((resolve, reject) => {
-      // Read the raw db into a variable
-      fs.readFile(process.cwd() + '/' + file, 'utf-8', function(err, rawJson){
-
-        if (err) {
-          if (callback) return callback(err);
-          return reject(err);
-        }
-
-        // Store it in a decent way
-        try {
-          self.data = JSON.parse(rawJson);
-          if (callback) return callback(false, self);
-          return resolve(self);
-        } catch(error) {
-          if (callback) return callback(error);
-          return reject(error);
-        }
-      });
+  // Load the database from a file
+  drive.readDB = function(file){
+    return fs.readFile(`${process.cwd()}/${file}`, 'utf-8').then(raw => {
+      this.data = JSON.parse(raw);
+      return this;
     });
   };
 
-  drive.update = function(sheet, file, callback){
 
-    // http://stackoverflow.com/questions/962033/what-underlies-this-javascript-idiom-var-self-this
-    var self = this;
 
-    return new Promise(function(resolve, reject) {
-      // To update the data we need to make sure we're working with an id
-      if (!sheet || !sheet.length) {
-        var err = new Error('Need a google drive url to update file');
-        if (callback) return callback(err);
-        return reject(err);
-      }
+  // Update the database from a remote url
+  drive.update = function(sheet, file){
 
-      // Build the url
-      var url = 'https://spreadsheets.google.com/feeds/list/' + sheet + '/od6/public/values?alt=json';
+    // To update the data we need to make sure we're working with an id
+    if (!sheet || !sheet.length) {
+      return Promise.reject(new Error('Need a google drive url to update file'));
+    }
 
-      // Call request() but keep this as `drive`
-      request(url, function(err, response, sheet){
+    // Build the url
+    const url = `https://spreadsheets.google.com/feeds/list/${sheet}/od6/public/values?alt=json`;
 
-        // There's a explicit error
-        if (err) {
-          if (callback) return callback(err);
-          return reject(err);
-        }
+    // Call request() but keep this as `drive`
+    return request(url).then(statusCode).then(response => {
 
-        // The server returned an error (but nothing failed)
-        if (response.statusCode >= 400) {
-          var err = new Error(response.statusMessage);
-          if (callback) return callback(err);
-          return reject(err);
-        }
+      // Parse the data from Drive and with the dev-specified parser
+      this.data = this.onload(this.parse(response.body));
 
-        // So that you can access this within self.after
-        self.data = self.parse(sheet).filter(function(el){
-          return el !== undefined;
-        });
-
-        // Call the function that should be called after retrieving the data
-        self.data = self.onload.call(self, self.data);
-
-        // Actually save the data into the file
-        fs.writeFile(file, JSON.stringify(self.data, null, 2), () => {
-          if (callback) callback(false, self);
-          else resolve(self);
-        });
-      });
-    });
+      // Actually save the data into the file
+      return fs.writeFile(file, JSON.stringify(this.data, null, 2));
+    }).then(() => this);
   };
+
+
 
   // Parse the JSON from drive
-  drive.parse = function(raw) {
+  drive.parse = raw => {
+
+    // Get only the valid keys
+    const getKeys = row => Object.keys(row).filter(key => /^gsx\$/.test(key));
+
+    // Create an entry for each row
+    const parseRow = row => getKeys(row).reduce((obj, key) => {
+      obj[key.slice(4)] = row[key].$t;
+      return obj;
+    }, {});
 
     // Get the json from google drive and loop it
-    return JSON.parse(raw).feed.entry.map(function(row){
-
-      var entry = {};
-
-      // Loop through all of the fields (only some are valid)
-      for (var field in row) {
-
-        // Match only those field names that are valid
-        if (field.match(/gsx\$[0-9a-zA-Z]+/)) {
-
-          // Get the field real name
-          var name = field.match(/gsx\$([0-9a-zA-Z]+)/)[1];
-
-          // Store it and its value
-          entry[name] = row[field].$t;
-        }
-      }
-
-      // Return it anyway
-      return entry;
-    });
+    return JSON.parse(raw).feed.entry.map(parseRow);
   };
 
 
   // The different mongodb conditions
   // http://docs.mongodb.org/manual/reference/operator/query-comparison/
-   var conditions = {
-     // This one is not actually in mongodb, but it's nice
-     "$eq" : function(value, test){ return value == test; },
-     "$gt" : function(value, test){ return value >  test; },
-     "$gte": function(value, test){ return value >= test; },
-     "$lt" : function(value, test){ return value <  test; },
-     "$lte": function(value, test){ return value <= test; },
-     "$ne" : function(value, test){ return value != test; },
-       // Loose type search: http://stackoverflow.com/a/20206734
-     "$in" : function(value, test){
-       return test.map(String).indexOf(value) > -1;
-       },
-     "$nin": function(value, test){
-       return !conditions.$in(value, test);
-       },
-     };
+  const conditions = {
+    // This one is not actually in mongodb, but it's nice
+    $eq : (value, test) => value == test,
+    $gt : (value, test) => value >  test,
+    $gte: (value, test) => value >= test,
+    $lt : (value, test) => value <  test,
+    $lte: (value, test) => value <= test,
+    $ne : (value, test) => value != test,
+
+    // Loose type search: http://stackoverflow.com/a/20206734
+    $in : (value, test) => test.map(String).indexOf(value) > -1,
+    $nin: (value, test) => !conditions.$in(value, test)
+  };
 
 
 
@@ -170,7 +124,7 @@ module.exports = function(options){
      }
 
      // Loop each possible condition
-     for (var name in conditions) {
+     for (let name in conditions) {
 
        // If the filter has this test and it's not passed
        if (name in conditions && name in test &&
@@ -193,10 +147,10 @@ module.exports = function(options){
     filter = (typeof filter == 'string') ? { id: filter } : filter;
 
     // Loop through all of the rows. Store the good ones here
-    var passed = this.data.filter(function(row){
+    const passed = this.data.filter(function(row){
 
       // Loop through all of the tests
-      for (var field in filter) {
+      for (let field in filter) {
 
         // Make sure we're dealing with a filter field
         if (field in row && !good(row[field], filter[field])) {
@@ -214,7 +168,7 @@ module.exports = function(options){
     passed.order = function(field, desc){
 
       // Inverse the order of the sort
-      var inv = (desc) ? -1 : 1;
+      const inv = (desc) ? -1 : 1;
 
       // Actually sort the data
       this.sort(function(a, b) {

@@ -1,52 +1,48 @@
 /* jshint expr:true */
-var fs = require('fs');
-var drive = require('../index')();
+const drive = require('../index')();
+const data = require('./data.json');
 
 // Testing that we are able to find records
-describe("drive.find()", function(){
+describe("drive.find()", () => {
 
+  // Overload the data with a known set
+  beforeAll(() => { drive.data = data; });
 
-  beforeAll(function(done){
-    // Overload the data with a known set
-    drive.data = require('./data.js');
-    done();
-  });
-
-  it('should load all records', function(){
+  it('should load all records', () => {
     expect(drive.find().length).toBe(6);
   });
 });
 
 
 
-describe('drive.find(filter)', function(){
+describe('drive.find(filter)', () => {
 
-  it('should load first record', function(){
+  it('should load first record', () => {
     expect(drive.find({ id: 1 }).length).toBe(1);
   });
 
-  it('should load John record', function(){
+  it('should load John record', () => {
     expect(drive.find({ firstname: "John" }).length).toBe(1);
   });
 
-  it('should load Miller record', function(){
-    expect(drive.find({ lastname: "Miller" }).length).toBe(1);
+  it('can find more than one person', () => {
+    expect(drive.find({ lastname: "Johnson" }).length).toBe(2);
   });
 
-  it('no records', function(){
+  it('no records', () => {
     expect(drive.find({ lastname: "dgwse" }).length).toBe(0);
   });
 });
 
 
 
-describe('drive.find(complexfilter)', function(){
+describe('drive.find(complexfilter)', () => {
 
   // Retrieve the spreadsheet
-  it('should load records with id > 4', function(){
-    var records = drive.find({ id: {$gt: 4} });
-    var none = records.filter(function(row){ return row.id <= 4; });
-    if (none.length > 0)
-      throw new Error("There's some record smaller than 4");
-    });
+  it('should load records with id > 4', () => {
+    const records = drive.find({ id: { $gt: 4 } });
+    expect(records.length).toBe(2);
+    const none = records.filter(row => row.id <= 4);
+    expect(none.length).toBe(0);
   });
+});

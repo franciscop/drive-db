@@ -16,11 +16,11 @@ To access it with the default configuration you just need to provide the Google 
 var drive = require("drive-db")("1BfDC-ryuqahvAVKFpu21KytkBWsFDSV4clNex4F1AXc");
 
 // Load the spreadsheet
-drive.load(function(err, db){
+drive.load().then(db => {
 
   // Find all Johns by their last name
   var Johns = db.find({ firstname: "John" }).order('lastname');
-});
+}).catch(console.log);
 ```
 
 The `db.find()` queries are the same as in mongoDB's [comparison query operators](http://docs.mongodb.org/manual/reference/operator/query-comparison/):
@@ -40,7 +40,7 @@ db.find({ firstname: { $in: ["John", "Jack"]] } });
 npm install drive-db --save
 ```
 
-To get the right google drive spreadsheet:
+To get the right Google Drive spreadsheet:
 
 - Create [a Google Spreadsheet](https://www.google.com/sheets/about/)
 - File > Publish to the Web > Publish
@@ -52,17 +52,17 @@ To get the right google drive spreadsheet:
 
 ```js
 // Single argument can be passed as that
-require('drive-db')("1fvz34wY6phWDJsuIneqvOoZRPfo6CfJyPg1BYgHt59k");
+require('drive-db')('1fvz34wY6phWDJsuIneqvOoZRPfo6CfJyPg1BYgHt59k');
 
 // If you want to add more options
-require('drive-db')({ sheet: "1fvz34wY6phWDJsuIneqvOoZRPfo6CfJyPg1BYgHt59k" });
+require('drive-db')({ sheet: '1fvz34wY6phWDJsuIneqvOoZRPfo6CfJyPg1BYgHt59k' });
 
 // Load it later on
 var drive = require('drive-db')();
-drive.sheet = "1BfDC-ryuqahvAVKFpu21KytkBWsFDSV4clNex4F1AXc";
+drive.sheet = '1BfDC-ryuqahvAVKFpu21KytkBWsFDSV4clNex4F1AXc';
 ```
 
-Note: the table has to have a structure similar to this, where the first row are the alphanumeric field names:
+The table has to have a structure similar to this, where the first row are the alphanumeric field names:
 
 | id | firstname | lastname | age | city          |
 |----|-----------|----------|-----|---------------|
@@ -70,7 +70,7 @@ Note: the table has to have a structure similar to this, where the first row are
 | 2  | Mery      | Johnson  | 19  | Tokyo         |
 | 3  | Peter     | Williams | 45  | London        |
 
-See [this document](https://docs.google.com/spreadsheets/d/1fvz34wY6phWDJsuIneqvOoZRPfo6CfJyPg1BYgHt59k/edit#gid=0) as an example. Note: please do not request access to edit it
+See [this document](https://docs.google.com/spreadsheets/d/1fvz34wY6phWDJsuIneqvOoZRPfo6CfJyPg1BYgHt59k/edit#gid=0) as an example. **Please do not request access to edit it**.
 
 
 ## Test
