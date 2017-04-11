@@ -7,6 +7,41 @@
 A Google Drive spreadsheet simple database. Stop wasting your time when a simple table is enough. Perfect for collaboration with multiple people editing the same spreadsheet.
 
 
+| id | firstname | lastname | age | city          |
+|----|-----------|----------|-----|---------------|
+| 1  | John      | Smith    | 34  | San Francisco |
+| 2  | Merry     | Johnson  | 19  | Tokyo         |
+| 3  | Peter     | Williams | 45  | London        |
+
+Becomes an array with some easy methods:
+
+```json
+[
+  {
+    "id": "1",
+    "firstname": "John",
+    "lastname": "Smith",
+    "age": "34",
+    "city": "San Francisco"
+  },
+  {
+    "id": "2",
+    "firstname": "Merry",
+    "lastname": "Johnson",
+    "age": "19",
+    "city": "Tokyo"
+  },
+  {
+    "id": "3",
+    "firstname": "Peter",
+    "lastname": "Williams",
+    "age": "45",
+    "city": "London"
+  }
+]
+```
+
+
 ## Usage
 
 To access it with the default configuration you just need to provide the Google Drive's sheet id. Read more in [**the full documentation**](https://github.com/franciscop/drive-db/blob/master/documentation.md), but here's an example:
@@ -67,7 +102,7 @@ The table has to have a structure similar to this, where the first row are the a
 | id | firstname | lastname | age | city          |
 |----|-----------|----------|-----|---------------|
 | 1  | John      | Smith    | 34  | San Francisco |
-| 2  | Mery      | Johnson  | 19  | Tokyo         |
+| 2  | Merry     | Johnson  | 19  | Tokyo         |
 | 3  | Peter     | Williams | 45  | London        |
 
 See [this document](https://docs.google.com/spreadsheets/d/1fvz34wY6phWDJsuIneqvOoZRPfo6CfJyPg1BYgHt59k/edit#gid=0) as an example. **Please do not request access to edit it**.
