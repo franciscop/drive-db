@@ -64,16 +64,19 @@ drive.onload = data => data;
 ```
 
 
-## .load(callback)
+## .load()
 
 ```js
+// With promises:
 drive.load().then(success).catch(error);
-drive.load(callback);
+
+// With await (must be inside an "async" function):
+const db = await drive.load();
 ```
 
-Loads the data prepared to use it in an async manner. The callback gets first an error object and second a database instance, following Node's convention. The database instance is the same object as drive, we only change its name to note that the data is already loaded.
+Loads the data prepared to use it in an async way. The database instance is the same object as drive, we only change its name to note that the data is already loaded.
 
-You can only call it if you have previously included `sheet` constiable in some way:
+You can only call it if you have previously included `sheet` variable in some way:
 
 ```js
 const drive = require('drive-db')('1fvz34wY6phWDJsuIneqvOoZRPfo6CfJyPg1BYgHt59k');
@@ -151,10 +154,10 @@ There are some more advanced things that you might consider. While I recommend y
 
 ### Refresh the cache
 
-While the default method `.load(callback)` only retrieves the remote data if the cache has expired, you can force a data refresh with the `.update()` command. It accepts two or three arguments:
+While the default method `.load()` only retrieves the remote data if the cache has expired, you can force a data refresh with the `.update()` command. It accepts two:
 
 ```js
-drive.update(SHEET_ID, LOCAL_DB_NAME, callback());
+const prom = drive.update(SHEET_ID, LOCAL_DB_NAME);
 
 // Example
 drive.update('1fvz34wY6phWDJsuIneqvOoZRPfo6CfJyPg1BYgHt59k', 'db.json').then(db => {
@@ -173,7 +176,7 @@ drive.update(false, 'data.json');
 
 ### Load locally
 
-If you just want to load a local json with search capabilities, you might also do so with `readDB()`. It accepts two arguments, the local file and the callback to be used when finished parsing:
+If you just want to load a local json with search capabilities, you might also do so with `readDB()`. It accepts a the local file as an argument and will return a promise that resolves with the data:
 
 ```js
 drive.readDB('db.json').then(db => {

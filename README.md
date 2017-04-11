@@ -13,7 +13,7 @@ A Google Drive spreadsheet simple database. Stop wasting your time when a simple
 | 2  | Merry     | Johnson  | 19  | Tokyo         |
 | 3  | Peter     | Williams | 45  | London        |
 
-Becomes an array with some easy methods:
+Becomes a JSON file and an object in your code:
 
 ```json
 [
