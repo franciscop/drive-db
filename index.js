@@ -14,6 +14,7 @@ module.exports = function(options){
     local: 'db.json',
     cache: 3600,
     onload: d => d,
+    tab: 'od6'
     data: []
   }, options);
 
@@ -37,7 +38,7 @@ module.exports = function(options){
 
     // If the timeout has expired or there's no local copy
     if (!fs.existsSync(this.local) || diff(this.local) > this.cache) {
-      return this.update(this.sheet, this.local);
+      return this.update(this.sheet, this.local, this.tab);
     }
 
     // Fetch it from the filesystem
@@ -57,7 +58,7 @@ module.exports = function(options){
 
 
   // Update the database from a remote url
-  drive.update = function(sheet, file){
+  drive.update = function(sheet, file, tab){
 
     // To update the data we need to make sure we're working with an id
     if (!sheet || !sheet.length) {
@@ -65,7 +66,7 @@ module.exports = function(options){
     }
 
     // Build the url
-    const url = `https://spreadsheets.google.com/feeds/list/${sheet}/od6/public/values?alt=json`;
+    const url = `https://spreadsheets.google.com/feeds/list/${sheet}/${tab}/public/values?alt=json`;
 
     // Call request() but keep this as `drive`
     return request(url).then(statusCode).then(response => {
