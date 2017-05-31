@@ -1,11 +1,9 @@
 [![Build Status](https://travis-ci.org/franciscop/drive-db.svg)](https://travis-ci.org/franciscop/drive-db)
 [![Coverage Status](https://coveralls.io/repos/franciscop/drive-db/badge.svg?branch=master)](https://coveralls.io/github/franciscop/drive-db?branch=master)
 
-
 # drive-db
 
 A Google Drive spreadsheet simple database. Stop wasting your time when a simple table is enough. Perfect for collaboration with multiple people editing the same spreadsheet.
-
 
 | id | firstname | lastname | age | city          |
 |----|-----------|----------|-----|---------------|

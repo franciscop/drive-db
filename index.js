@@ -14,7 +14,7 @@ module.exports = function(options){
     local: 'db.json',
     cache: 3600,
     onload: d => d,
-    tab: 'od6'
+    tab: 'od6',
     data: []
   }, options);
 
@@ -58,7 +58,7 @@ module.exports = function(options){
 
 
   // Update the database from a remote url
-  drive.update = function(sheet, file, tab){
+  drive.update = function(sheet, file, tab = 'od6'){
 
     // To update the data we need to make sure we're working with an id
     if (!sheet || !sheet.length) {
