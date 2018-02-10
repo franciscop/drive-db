@@ -28,14 +28,6 @@ module.exports = function(options){
 
 
 
-  // The server returned an error (but nothing failed)
-  const statusCode = res => {
-    if (res.statusCode < 400) return res;
-    throw new Error(`
-Status code ${res.statusCode} received with the message "${res.statusMessage}" for the url ${res.request.href}
-    `);
-  };
-
 
   drive.load = function(){
 
@@ -61,25 +53,31 @@ Status code ${res.statusCode} received with the message "${res.statusMessage}" f
 
 
   // Update the database from a remote url
-  drive.update = function(sheet, file, tab = drive.tab){
+  drive.update = async function(sheet, file, tab = drive.tab){
 
     // To update the data we need to make sure we're working with an id
     if (!sheet || !sheet.length) {
       return Promise.reject(new Error('Need a google drive url to update file'));
     }
 
-    // Build the url
-    const url = `https://spreadsheets.google.com/feeds/list/${sheet}/${tab}/public/values?alt=json`;
+    // Call request() with the right url but keep `this` as `drive`
+    const res = await request(`https://spreadsheets.google.com/feeds/list/${sheet}/${tab}/public/values?alt=json`);
 
-    // Call request() but keep this as `drive`
-    return request(url).then(statusCode).then(response => {
+    // The server returned an error (but nothing failed)
+    if (res.statusCode >= 400) {
+      throw new Error(`
+Status code ${res.statusCode} received with the message "${res.statusMessage}" for the url ${res.request.href}
+      `);
+    }
 
-      // Parse the data from Drive and with the dev-specified parser
-      this.data = this.onload(this.parse(response.body));
+    // Parse the data from Drive and with the dev-specified parser
+    this.data = await this.onload(this.parse(res.body));
 
-      // Actually save the data into the file
-      return fs.writeFile(file, JSON.stringify(this.data, null, 2));
-    }).then(() => this);
+    // Actually save the data into the file
+    await fs.writeFile(file, JSON.stringify(this.data, null, 2));
+
+    // Return the instance to keep working on it
+    return this;
   };
 
 

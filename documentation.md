@@ -51,7 +51,7 @@ const drive = require('drive-db')({
 - `sheet`: set the spreadsheet id. Read the previous point
 - `local`: set the local db name relative to the root
 - `cache`: set the maximum time (in **seconds**) that the current cache is valid. After this, the data will be loaded again when the function is called. This is really useful when combined with development env constant. Set to 0 to refresh in each request.
-- `onload`: a function that sets a transformation between the data of the spreadsheet and the local db. It accepts the whole array and must return the whole modified array and it's useful to avoid doing the operations on each request
+- `onload`: a function that sets a transformation between the data of the spreadsheet and the local db. It accepts the whole array and must return the whole modified array and it's useful to avoid doing the operations on each request. You can return a promise here and it will be waited.
 
 These options can also be loaded at any point after loading the module. Here with the defaults again:
 
