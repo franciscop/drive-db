@@ -14,7 +14,7 @@ module.exports = function(options){
     local: 'db.json',
     cache: 3600,
     onload: d => d,
-    tab: 'od6',
+    tab: 'default',  // od6
     data: []
   }, options);
 
@@ -29,9 +29,12 @@ module.exports = function(options){
 
 
   // The server returned an error (but nothing failed)
-  const statusCode = res => res.statusCode >= 400
-    ? Promise.reject(Error(res.statusMessage)) : res;
-
+  const statusCode = res => {
+    if (res.statusCode < 400) return res;
+    throw new Error(`
+Status code ${res.statusCode} received with the message "${res.statusMessage}" for the url ${res.request.href}
+    `);
+  };
 
 
   drive.load = function(){
@@ -58,7 +61,7 @@ module.exports = function(options){
 
 
   // Update the database from a remote url
-  drive.update = function(sheet, file, tab = 'od6'){
+  drive.update = function(sheet, file, tab = drive.tab){
 
     // To update the data we need to make sure we're working with an id
     if (!sheet || !sheet.length) {
@@ -94,7 +97,14 @@ module.exports = function(options){
     }, {});
 
     // Get the json from google drive and loop it
-    return JSON.parse(raw).feed.entry.map(parseRow);
+    try {
+      return JSON.parse(raw).feed.entry.map(parseRow);
+    } catch (err) {
+      throw new Error(`
+Could not parse JSON response, we received this instead of proper JSON:
+${raw}
+      `);
+    }
   };
 
 
