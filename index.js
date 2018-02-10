@@ -97,14 +97,16 @@ Status code ${res.statusCode} received with the message "${res.statusMessage}" f
     }, {});
 
     // Get the json from google drive and loop it
+    let data;
     try {
-      return JSON.parse(raw).feed.entry.map(parseRow);
+      data = JSON.parse(raw);
     } catch (err) {
       throw new Error(`
 Could not parse JSON response, we received this instead of proper JSON:
 ${raw}
       `);
     }
+    return data.feed.entry.map(parseRow);
   };
 
 
