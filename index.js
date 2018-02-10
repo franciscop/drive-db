@@ -106,6 +106,10 @@ Could not parse JSON response, we received this instead of proper JSON:
 ${raw}
       `);
     }
+    if (!data.feed.entry) {
+      console.log('Your spreadsheet seems not to have any data yet');
+      return [];
+    }
     return data.feed.entry.map(parseRow);
   };
 
