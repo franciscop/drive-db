@@ -19,7 +19,7 @@
     "spreadsheet",
     "mongodb"
   ],
-  "author": "Francisco Presencia Fandos <public@francisco.io> (https://francisco.io/)",
+  "author": "Francisco Presencia <public@francisco.io> (https://francisco.io/)",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/FranciscoP/drive-db/issues"
