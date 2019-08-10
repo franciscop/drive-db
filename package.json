@@ -4,7 +4,7 @@
   "description": "A simple google drive spreadsheet database with mongodb interface",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest --coverage"
   },
   "repository": {
     "type": "git",
@@ -26,14 +26,10 @@
   },
   "homepage": "https://github.com/FranciscoP/drive-db",
   "dependencies": {
-    "defaults": "^1.0.2",
     "fs-promise": "^2.0.2",
     "request-promises": "^1.0.1"
   },
   "devDependencies": {
-    "chai": "^1.10.0",
-    "coveralls": "^2.11.4",
-    "jest": "^19.0.2",
-    "mocha": "^2.1.0"
+    "jest": "^19.0.2"
   }
 }
