@@ -39,35 +39,32 @@ Becomes an array of objects with the corresponding keys:
 
 ## Getting Started
 
+Create the Google Drive spreadsheet and **publish it**:
+
+- Create [a Google Spreadsheet](https://www.google.com/sheets/about/)
+- File > Publish to the Web > Publish
+- Copy the id between `/spreadsheets/` and `/edit` in the url:
+
+> [https://docs.google.com/spreadsheets/d/<strong>1fvz34wY6phWDJsuIneqvOoZRPfo6CfJyPg1BYgHt59k</strong>/edit#gid=0](https://docs.google.com/spreadsheets/d/1fvz34wY6phWDJsuIneqvOoZRPfo6CfJyPg1BYgHt59k/edit#gid=0)
+
 Install `drive-db` in your project:
 
 ```bash
 npm install drive-db
 ```
 
-To get the right Google Drive spreadsheet:
-
-- Create [a Google Spreadsheet](https://www.google.com/sheets/about/)
-- File > Publish to the Web > Publish
-- Copy the id between `/spreadsheets/` and `/edit` in the url:
-
-    > [https://docs.google.com/spreadsheets/d/<strong>1fvz34wY6phWDJsuIneqvOoZRPfo6CfJyPg1BYgHt59k</strong>/edit#gid=0](https://docs.google.com/spreadsheets/d/1fvz34wY6phWDJsuIneqvOoZRPfo6CfJyPg1BYgHt59k/edit#gid=0)
-
 Load the spreadsheet into your project:
 
 ```js
 // Include the module and tell it which spreadsheet to use
 const drive = require("drive-db");
-const sheet = "1fvz34wY6phWDJsuIneqvOoZRPfo6CfJyPg1BYgHt59k"; // Or from .env
 
+// Create an async context to be able to call `await`
 (async () => {
-  // Load the data
-  const db = await drive(sheet);
+  // Load the data from the Drive Spreadsheet
+  const db = await drive("1fvz34wY6phWDJsuIneqvOoZRPfo6CfJyPg1BYgHt59k");
 
-  // Find all people from San Francisco
-  const sf = db.filter(entry => /San Francisco/i.test(entry.city));
-
-  console.log(sf);
+  console.log(db);
 })();
 ```
 
