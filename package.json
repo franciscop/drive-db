@@ -1,9 +1,11 @@
 {
   "name": "drive-db",
   "version": "5.0.0-0",
-  "description": "A simple google drive spreadsheet database with mongodb interface",
-  "main": "index.js",
+  "description": "📊 Use Google Drive spreadsheets as a simple database",
+  "main": "index.min.js",
   "scripts": {
+    "build": "rollup index.js --name drive --output.format umd | uglifyjs -o index.min.js",
+    "demo": "node ./demo.js",
     "start": "jest --watch",
     "test": "jest --coverage"
   },
@@ -31,7 +33,24 @@
     "node-fetch": "^2.6.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.4.4",
+    "@babel/preset-env": "^7.4.4",
+    "babel-jest": "^24.8.0",
     "jest": "^24.8.0",
-    "node-fetch": "^2.6.0"
+    "node-fetch": "^2.6.0",
+    "rollup": "^1.11.3",
+    "uglify-es": "^3.3.9"
+  },
+  "babel": {
+    "presets": [
+      [
+        "@babel/preset-env",
+        {
+          "targets": {
+            "node": "current"
+          }
+        }
+      ]
+    ]
   }
 }

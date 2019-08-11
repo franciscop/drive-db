@@ -1,7 +1,13 @@
-// Required modules
-if (typeof global !== undefined && !global.fetch) {
+// Polyfill fetch()
+const self =
+  typeof window !== "undefined" // For the browser and Jest
+    ? window
+    : typeof global !== "undefined" // For Node.js
+    ? global
+    : {}; // Failback
+if (!self.fetch) {
   try {
-    global.fetch = require("node-fetch");
+    self.fetch = require("node-fetch");
   } catch (error) {
     throw new Error(
       "fetch() is not available, please install node-fetch or polyfill fetch()"
@@ -9,6 +15,7 @@ if (typeof global !== undefined && !global.fetch) {
   }
 }
 
+// Find the Google Drive data
 const getKeys = row => Object.keys(row).filter(key => /^gsx\$/.test(key));
 const parseRow = row => {
   return getKeys(row).reduce((obj, key) => {
@@ -42,7 +49,7 @@ const memo = (cb, map = {}) => async (options, timeout) => {
 // By default, cache it 1hour
 const getSheet = memo(retrieve);
 
-module.exports = async options => {
+export default async options => {
   const {
     sheet = "",
     tab = "default", // od6
