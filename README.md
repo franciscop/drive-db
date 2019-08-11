@@ -60,7 +60,7 @@ Load the spreadsheet into your project:
 const drive = require("drive-db");
 
 (async () => {
-  const db = await drive("1BfDC-ryuqahvAVKFpu21KytkBWsFDSV4clNex4F1AXc")
+  const db = await drive("1BfDC-ryuqahvAVKFpu21KytkBWsFDSV4clNex4F1AXc");
 
   // Find all people from San Francisco
   const sf = db.filter(entry => /San Francisco/i.test(entry.city));
