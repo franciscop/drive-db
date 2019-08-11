@@ -58,9 +58,11 @@ Load the spreadsheet into your project:
 ```js
 // Include the module and tell it which spreadsheet to use
 const drive = require("drive-db");
+const sheet = "1fvz34wY6phWDJsuIneqvOoZRPfo6CfJyPg1BYgHt59k"; // Or from .env
 
 (async () => {
-  const db = await drive("1BfDC-ryuqahvAVKFpu21KytkBWsFDSV4clNex4F1AXc");
+  // Load the data
+  const db = await drive(sheet);
 
   // Find all people from San Francisco
   const sf = db.filter(entry => /San Francisco/i.test(entry.city));
@@ -131,16 +133,15 @@ If you are using [server for Node.js](https://serverjs.io/) with ES6+:
 
 ```js
 const drive = require("drive-db");
-const server = require("server");
-const { get } = server.router;
 const sheet = "1fvz34wY6phWDJsuIneqvOoZRPfo6CfJyPg1BYgHt59k"; // Or from .env
 
-// Pro-tip: warm the cache as soon as the Node.js project is launched
-drive(sheet);
+const server = require("server");
+const { get } = server.router;
+const { render } = server.reply;
 
 const home = get("/", async ctx => {
   const records = await drive(sheet);
-  ctx.res.render("index", { records });
+  return render("index", { records });
 });
 
 server(home);
@@ -149,6 +150,30 @@ server(home);
 ## Advanced
 
 There are some more advanced things that you might consider. While I recommend you to read the code for this, here are a couple of examples.
+
+### Warm the cache
+
+To warm the cache on project launch before the first request comes in, call the promise without awaiting or doing anything with it:
+
+```js
+const drive = require("drive-db");
+const sheet = "1fvz34wY6phWDJsuIneqvOoZRPfo6CfJyPg1BYgHt59k"; // Or from .env
+
+const server = require("server");
+const { get } = server.router;
+const { render } = server.reply;
+
+// Pro-tip: warm the cache as soon as the Node.js project is launched
+drive(sheet);
+
+const home = get("/", async ctx => {
+  const records = await drive(sheet);
+  return render("index", { records });
+});
+
+server(home);
+```
+
 
 ### Refresh the cache
 
