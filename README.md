@@ -1,7 +1,4 @@
-[![Build Status](https://travis-ci.org/franciscop/drive-db.svg)](https://travis-ci.org/franciscop/drive-db)
-[![Coverage Status](https://coveralls.io/repos/franciscop/drive-db/badge.svg?branch=master)](https://coveralls.io/github/franciscop/drive-db?branch=master)
-
-# drive-db
+# drive-db [![Build Status](https://travis-ci.org/franciscop/drive-db.svg)](https://travis-ci.org/franciscop/drive-db) [![Coverage Status](https://coveralls.io/repos/franciscop/drive-db/badge.svg?branch=master)](https://coveralls.io/github/franciscop/drive-db?branch=master)
 
 Use Google Drive spreadsheets as a simple database for Node.js and the browser. Perfect for collaboration with multiple people editing the same spreadsheet. Works on the browser, Node.js and Functions:
 
