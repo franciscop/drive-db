@@ -53,7 +53,7 @@ To get the right Google Drive spreadsheet:
 
     > [https://docs.google.com/spreadsheets/d/<strong>1fvz34wY6phWDJsuIneqvOoZRPfo6CfJyPg1BYgHt59k</strong>/edit#gid=0](https://docs.google.com/spreadsheets/d/1fvz34wY6phWDJsuIneqvOoZRPfo6CfJyPg1BYgHt59k/edit#gid=0)
 
-- Load the spreadsheet into your project:
+Load the spreadsheet into your project:
 
 ```js
 // Include the module and tell it which spreadsheet to use
