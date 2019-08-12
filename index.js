@@ -7,40 +7,45 @@ const parseRow = row => {
   }, {});
 };
 
+// Make a GET HTTP response and parse the JSON response
 const get = async url => {
+  // Try first with fetch() - browser, worker, polyfilled, etc
   if (typeof fetch !== "undefined") {
     const res = await fetch(url);
     if (!res.ok) throw new Error(`Error ${res.status} retrieving ${url}`);
     return res.json();
   }
-  if (typeof require === "undefined") {
-    throw new Error("fetch() is not available, please polyfill it");
+
+  // Now try with Node.js, which needs to be promisified
+  if (typeof require !== "undefined") {
+    return new Promise((resolve, reject) => {
+      const handler = res => {
+        res.setEncoding("utf8");
+        if (res.statusCode < 200 || res.statusCode >= 300) {
+          return reject(new Error(`Error ${res.statusCode} retrieving ${url}`));
+        }
+        let data = "";
+        res.on("data", chunk => (data += chunk));
+        res.on("end", () => resolve(JSON.parse(data)));
+      };
+      require("https")
+        .get(url, handler)
+        .on("error", reject);
+    });
   }
-  return new Promise((resolve, reject) => {
-    const handler = res => {
-      res.setEncoding("utf8");
-      if (res.statusCode < 200 || res.statusCode >= 300) {
-        return reject(new Error(`Error ${res.statusCode} retrieving ${url}`));
-      }
-      let data = "";
-      res.on("data", chunk => (data += chunk));
-      res.on("end", () => resolve(JSON.parse(data)));
-    };
-    require("https")
-      .get(url, handler)
-      .on("error", reject);
-  });
+
+  // No supported method was found, display the warning
+  throw new Error("fetch() is not available, please polyfill it");
 };
 
 const retrieve = async ({ sheet, tab }) => {
-  // Call request() with the right url but keep `this` as `drive`
-
   const data = await get(
     `https://spreadsheets.google.com/feeds/list/${sheet}/${tab}/public/values?alt=json`
   );
   return data.feed.entry.map(parseRow);
 };
 
+// Memoize a callback similar to React
 const memo = (cb, map = {}) => async (options, timeout) => {
   const key = JSON.stringify(options);
   const time = new Date();
@@ -51,9 +56,10 @@ const memo = (cb, map = {}) => async (options, timeout) => {
   return map[key].value;
 };
 
-// By default, cache it 1hour
+// It should be memoized here, since we memoize the whole *request* and *parse*
 const getSheet = memo(retrieve);
 
+// The main drive() function
 export default async options => {
   const {
     sheet = "",
