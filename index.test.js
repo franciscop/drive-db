@@ -1,5 +1,5 @@
 /* jshint expr:true */
-const drive = require(".");
+import drive from "./index.js";
 
 // Testing that we are able to load the library
 describe("drive-db", function() {
@@ -24,9 +24,11 @@ describe("drive-db", function() {
     );
   });
 
-  it("throws with a wront sheet id", async () => {
+  it("throws with a wrong sheet id", async () => {
     await expect(drive("abc")).rejects.toEqual(
-      new Error("Error 400 retrieving the spreadsheet abc")
+      new Error(
+        "Error 400 retrieving https://spreadsheets.google.com/feeds/list/abc/default/public/values?alt=json"
+      )
     );
   });
 

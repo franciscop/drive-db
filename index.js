@@ -1,20 +1,3 @@
-// Polyfill fetch()
-const self =
-  typeof window !== "undefined" // For the browser and Jest
-    ? window
-    : typeof global !== "undefined" // For Node.js
-    ? global
-    : {}; // Failback
-if (!self.fetch) {
-  try {
-    self.fetch = require("node-fetch");
-  } catch (error) {
-    throw new Error(
-      "fetch() is not available, please install node-fetch or polyfill fetch()"
-    );
-  }
-}
-
 // Find the Google Drive data
 const getKeys = row => Object.keys(row).filter(key => /^gsx\$/.test(key));
 const parseRow = row => {
@@ -24,16 +7,38 @@ const parseRow = row => {
   }, {});
 };
 
+const get = async url => {
+  if (typeof fetch !== "undefined") {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`Error ${res.status} retrieving ${url}`);
+    return res.json();
+  }
+  if (typeof require === "undefined") {
+    throw new Error("fetch() is not available, please polyfill it");
+  }
+  return new Promise((resolve, reject) => {
+    const handler = res => {
+      res.setEncoding("utf8");
+      if (res.statusCode < 200 || res.statusCode >= 300) {
+        return reject(new Error(`Error ${res.statusCode} retrieving ${url}`));
+      }
+      let data = "";
+      res.on("data", chunk => (data += chunk));
+      res.on("end", () => resolve(JSON.parse(data)));
+    };
+    require("https")
+      .get(url, handler)
+      .on("error", reject);
+  });
+};
+
 const retrieve = async ({ sheet, tab }) => {
   // Call request() with the right url but keep `this` as `drive`
-  const res = await fetch(
+
+  const data = await get(
     `https://spreadsheets.google.com/feeds/list/${sheet}/${tab}/public/values?alt=json`
   );
-  if (!res.ok) {
-    throw new Error(`Error ${res.status} retrieving the spreadsheet ${sheet}`);
-  }
-  const full = await res.json();
-  return full.feed.entry.map(parseRow);
+  return data.feed.entry.map(parseRow);
 };
 
 const memo = (cb, map = {}) => async (options, timeout) => {
