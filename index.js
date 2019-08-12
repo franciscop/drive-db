@@ -57,7 +57,7 @@ const getSheet = memo(retrieve);
 export default async options => {
   const {
     sheet = "",
-    tab = "default", // od6
+    tab = "default", // Or "od6"
     cache = 3600,
     onload = d => d
   } = typeof options === "object" ? options : { sheet: options };

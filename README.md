@@ -1,4 +1,4 @@
-# drive-db [![Build Status](https://travis-ci.org/franciscop/drive-db.svg)](https://travis-ci.org/franciscop/drive-db) [![Coverage Status](https://coveralls.io/repos/franciscop/drive-db/badge.svg?branch=master)](https://coveralls.io/github/franciscop/drive-db?branch=master)
+# drive-db [![Build Status](https://travis-ci.org/franciscop/drive-db.svg)](https://travis-ci.org/franciscop/drive-db) [![npm install drive-db](https://img.shields.io/badge/npm%20install-drive--db-blue.svg)](https://www.npmjs.com/package/drive-db) [![demo](https://img.shields.io/badge/demo-blue.svg)](https://jsfiddle.net/franciscop/1w4t7mc5/)
 
 Use Google Drive spreadsheets as a simple database for Node.js and the browser. Perfect for collaboration with multiple people editing the same spreadsheet. Works on the browser, Node.js and Functions:
 
@@ -77,7 +77,9 @@ See [this document](https://docs.google.com/spreadsheets/d/1fvz34wY6phWDJsuIneqv
 
 
 
-## Include the module
+## API
+
+You import a single default export depending on your configuration:
 
 ```js
 // For ES7 modules
@@ -87,39 +89,41 @@ import drive from "drive-db";
 const drive = require("drive-db");
 ```
 
-To initialize it, call it and await for the promise it returns:
+To retrieve the data call it and await for the promise it returns:
 
 ```js
 // With async/await:
 const db = await drive(SHEET_ID);
 const db = await drive(options);
+console.log(db);
 
 // Use the callback syntax:
-drive(SHEET_ID).then(db => { ... });
-drive(options).then(db => { ... });
+drive(SHEET_ID).then(db => console.log(db));
+drive(options).then(db => console.log(db));
 ```
 
-**SHEET_ID**: this is the only option that is required. When editing a google spreadsheet, it's the part between `/spreadsheets/` and `/edit` in the url. Please make sure to also publish the spreadsheet before copying it (File > Publish to the Web > Publish):
+**SHEET_ID**: alias of `options = { sheet: SHEET_ID }`:
 
 ```js
 const db = await drive("1fvz34wY6phWDJsuIneqvOoZRPfo6CfJyPg1BYgHt59k");
 console.log(db);
 ```
 
-**options**: a simple object containing some options. Example with all the defaults:
+**options**: a simple object containing some options:
 
 ```js
 const db = await drive({
-  sheet: "",
+  sheet: "1fvz34wY6phWDJsuIneqvOoZRPfo6CfJyPg1BYgHt59k",
   tab: "default",
   cache: 3600,
   onload: data => data
 });
 ```
 
-- `sheet`: set the spreadsheet id. Read the previous point
-- `cache`: set the maximum time (in **seconds**) that the current cache is valid. After this, the data will be loaded again when the function is called. This is really useful when combined with development env constant. Set to 0 to refresh in each request.
-- `onload`: a function that sets a transformation between the data of the spreadsheet and the local db. It accepts the whole array and must return the whole modified array and it's useful to avoid doing the operations on each request. You can return a promise here and it will be waited. It will be called ON EACH CALL, even if the underlying data was cached.
+- `sheet` (required): when editing a google spreadsheet, it's the part between `/spreadsheets/` and `/edit` in the url. Please make sure to also publish the spreadsheet before copying it (File > Publish to the Web > Publish)
+- `tab` (`'default'`): the tab to use in the spreadsheet, which defaults to the first tab. It's difficult to find the technical name from the interface, but [this StackOverflow thread](https://stackoverflow.com/q/24531351/938236) might help you.
+- `cache` (`3600`): set the maximum time (in **seconds**) that the current cache is valid. After this, the data will be loaded again when the function is called. This is really useful when combined with development env constant. Set to 0 to refresh in each request.
+- `onload`: a function that sets a transformation between the data of the spreadsheet and the local db. It accepts the whole array and must return the whole modified array and it's useful to avoid doing the operations on each request. You can return a promise here and it will be waited. It will be run ON EACH CALL, even if the underlying data was cached.
 
 It returns a plain Javascript array. With ES6+, operations on arrays are great, but feel free to use Lodash or similar if you want some more advanced queries.
 
@@ -145,22 +149,23 @@ server(home);
 
 There are some more advanced things that you might consider. While I recommend you to read the code for this, here are a couple of examples.
 
+
 ### Warm the cache
 
 To warm the cache on project launch before the first request comes in, call the promise without awaiting or doing anything with it:
 
 ```js
 const drive = require("drive-db");
-const sheet = "1fvz34wY6phWDJsuIneqvOoZRPfo6CfJyPg1BYgHt59k"; // Or from .env
+const sheet = "1fvz34wY6phWDJsuIneqvOoZRPfo6CfJyPg1BYgHt59k";
+// Warms the cache as soon as the Node.js project is launched
+drive(sheet);
 
 const server = require("server");
 const { get } = server.router;
 const { render } = server.reply;
 
-// Pro-tip: warm the cache as soon as the Node.js project is launched
-drive(sheet);
-
 const home = get("/", async ctx => {
+  // Cache is already warm when this request happens
   const records = await drive(sheet);
   return render("index", { records });
 });
@@ -171,7 +176,7 @@ server(home);
 
 ### Refresh the cache
 
-To clear and refresh the cache, call `drive()` with a cache time of 0:
+To force-refresh the cache at any point you can call `drive()` with a cache time of 0:
 
 ```js
 drive({ sheet, cache: 0 });
@@ -179,7 +184,7 @@ drive({ sheet, cache: 0 });
 
 ### Load locally
 
-This is not available anymore. Since `drive-db` returns a plain array, so you could just load the data locally:
+This is not available anymore. Since `drive-db` returns a plain array, you can just load the data locally:
 
 ```js
 const data = require("./data.json");
