@@ -1,6 +1,6 @@
 {
   "name": "drive-db",
-  "version": "5.0.0-1",
+  "version": "5.0.0",
   "description": "📊 Use Google Drive spreadsheets as a simple database",
   "main": "index.min.js",
   "scripts": {
