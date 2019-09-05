@@ -1,6 +1,12 @@
 # drive-db [![Build Status](https://travis-ci.org/franciscop/drive-db.svg)](https://travis-ci.org/franciscop/drive-db) [![npm install drive-db](https://img.shields.io/badge/npm%20install-drive--db-blue.svg)](https://www.npmjs.com/package/drive-db) [![demo](https://img.shields.io/badge/demo-blue.svg)](https://jsfiddle.net/franciscop/1w4t7mc5/)
 
-Use Google Drive spreadsheets as a simple database for Node.js and the browser. Perfect for collaboration with multiple people editing the same spreadsheet. Works on the browser, Node.js and Functions:
+Use Google Drive spreadsheets as a simple database for Node.js and the browser. Perfect for collaboration with multiple people editing the same spreadsheet:
+
+```js
+// Load the data from the Drive Spreadsheet
+const db = await drive("1fvz34wY6phWDJsuIneqvOoZRPfo6CfJyPg1BYgHt59k");
+console.log(db);
+```
 
 | id | firstname | lastname | age | city          |
 |----|-----------|----------|-----|---------------|
