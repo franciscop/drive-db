@@ -2,16 +2,17 @@
   "name": "drive-db",
   "version": "5.0.1",
   "description": "📊 Use Google Drive spreadsheets as a simple database",
-  "main": "index.min.js",
+  "homepage": "https://github.com/franciscop/drive-db#readme",
+  "repository": "https://github.com/franciscop/drive-db.git",
+  "bugs": "https://github.com/franciscop/drive-db/issues",
+  "funding": "https://www.paypal.me/franciscopresencia/19",
+  "author": "Francisco Presencia <public@francisco.io> (https://francisco.io/)",
+  "license": "MIT",
   "scripts": {
     "build": "rollup index.js --name drive --output.format umd | uglifyjs -o index.min.js",
     "demo": "node ./demo.js",
     "start": "jest --watch",
     "test": "jest --coverage"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/FranciscoP/drive-db.git"
   },
   "keywords": [
     "google",
@@ -20,14 +21,11 @@
     "db",
     "table",
     "spreadsheet",
-    "mongodb"
+    "mongodb",
+    "async"
   ],
-  "author": "Francisco Presencia <public@francisco.io> (https://francisco.io/)",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/FranciscoP/drive-db/issues"
-  },
-  "homepage": "https://github.com/FranciscoP/drive-db",
+  "main": "index.min.js",
+  "files": [],
   "dependencies": {},
   "devDependencies": {
     "@babel/core": "^7.4.4",
