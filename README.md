@@ -120,14 +120,14 @@ console.log(db);
 ```js
 const db = await drive({
   sheet: "1fvz34wY6phWDJsuIneqvOoZRPfo6CfJyPg1BYgHt59k",
-  tab: "default",
+  tab: "1",
   cache: 3600,
   onload: data => data
 });
 ```
 
 - `sheet` (required): when editing a google spreadsheet, it's the part between `/spreadsheets/` and `/edit` in the url. Please make sure to also publish the spreadsheet before copying it (File > Publish to the Web > Publish)
-- `tab` (`'default'`): the tab to use in the spreadsheet, which defaults to the first tab. It's difficult to find the technical name from the interface, but [this StackOverflow thread](https://stackoverflow.com/q/24531351/938236) might help you.
+- `tab` (`'1'`): the tab to use in the spreadsheet, which defaults to the first tab. It's the number *as a string* of the tab.
 - `cache` (`3600`): set the maximum time (in **seconds**) that the current cache is valid. After this, the data will be loaded again when the function is called. This is really useful when combined with development env constant. Set to 0 to refresh in each request.
 - `onload`: a function that sets a transformation between the data of the spreadsheet and the local db. It accepts the whole array and must return the whole modified array and it's useful to avoid doing the operations on each request. You can return a promise here and it will be waited. It will be run ON EACH CALL, even if the underlying data was cached.
 
