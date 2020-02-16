@@ -1,6 +1,6 @@
 {
   "name": "drive-db",
-  "version": "5.0.2",
+  "version": "5.0.3",
   "description": "📊 Use Google Drive spreadsheets as a simple database",
   "homepage": "https://github.com/franciscop/drive-db#readme",
   "repository": "https://github.com/franciscop/drive-db.git",
