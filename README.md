@@ -3,9 +3,13 @@
 Use Google Drive spreadsheets as a simple database for Node.js and the browser. Perfect for collaboration with multiple people editing the same spreadsheet:
 
 ```js
+import drive from 'drive-db';
+
 // Load the data from the Drive Spreadsheet
-const db = await drive("1fvz34wY6phWDJsuIneqvOoZRPfo6CfJyPg1BYgHt59k");
-console.log(db);
+(async () => {
+  const db = await drive("1fvz34wY6phWDJsuIneqvOoZRPfo6CfJyPg1BYgHt59k");
+  console.log(db);
+})();
 ```
 
 | id | firstname | lastname | age | city          |
@@ -50,13 +54,19 @@ Create the Google Drive spreadsheet and **publish it**:
 
     > [https://docs.google.com/spreadsheets/d/<strong>1fvz34wY6phWDJsuIneqvOoZRPfo6CfJyPg1BYgHt59k</strong>/edit](https://docs.google.com/spreadsheets/d/1fvz34wY6phWDJsuIneqvOoZRPfo6CfJyPg1BYgHt59k/edit)
 
-Install `drive-db` in your project:
+Now you can either add the CDN <script> or use a bundler. For the CDN:
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/drive-db"></script>
+```
+
+Otherwise install `drive-db` in your project:
 
 ```bash
 npm install drive-db
 ```
 
-Load the spreadsheet into your project:
+And then load the spreadsheet into your project:
 
 ```js
 // Include the module and tell it which spreadsheet to use
