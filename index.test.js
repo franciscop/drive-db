@@ -1,6 +1,10 @@
 /* jshint expr:true */
 import drive from "./index.js";
 
+const https = jest.genMockFromModule("https");
+
+const delay = time => new Promise(done => setTimeout(done, time));
+
 // Testing that we are able to load the library
 describe("drive-db", function() {
   it("returns a table", async () => {
@@ -40,10 +44,10 @@ describe("drive-db", function() {
   });
 
   it("can work with expired cache", async () => {
-    const db = await drive("1fvz34wY6phWDJsuIneqvOoZRPfo6CfJyPg1BYgHt59k", 100);
+    const db = await drive("1fvz34wY6phWDJsuIneqvOoZRPfo6CfJyPg1BYgHt59k");
     expect(Array.isArray(db)).toBe(true);
     expect(db.length).toBe(6);
-    await new Promise(done => setTimeout(done, 1000));
+    await delay(1000);
     const db2 = await drive("1fvz34wY6phWDJsuIneqvOoZRPfo6CfJyPg1BYgHt59k");
   });
 });

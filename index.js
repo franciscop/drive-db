@@ -39,10 +39,10 @@ const get = async url => {
 };
 
 const retrieve = async ({ sheet, tab }) => {
-  const data = await get(
+  const raw = await get(
     `https://spreadsheets.google.com/feeds/list/${sheet}/${tab}/public/values?alt=json`
   );
-  return data.feed.entry.map(parseRow);
+  return raw.feed.entry.map(parseRow);
 };
 
 // Memoize a callback similar to React
@@ -52,7 +52,7 @@ const memo = (cb, map = {}) => async (options, timeout) => {
   if (map[key] && time - map[key].time < timeout) {
     return map[key].value;
   }
-  map[key] = { value: cb(options), time };
+  map[key] = { value: await cb(options), time };
   return map[key].value;
 };
 
@@ -61,15 +61,11 @@ const getSheet = memo(retrieve);
 
 // The main drive() function
 export default async options => {
-  const {
-    sheet = "",
-    tab = "default", // Or "od6"
-    cache = 3600,
-    onload = d => d
-  } = typeof options === "object" ? options : { sheet: options };
+  const optObject = typeof options === "object" ? options : { sheet: options };
+  const { sheet = "", tab = "default", cache = 3600 } = optObject;
 
   // To update the data we need to make sure we're working with an id
   if (!sheet) throw new Error("Need a Google Drive sheet id to load");
 
-  return onload(getSheet({ sheet, tab }, cache));
+  return getSheet({ sheet, tab }, cache);
 };
