@@ -18,8 +18,6 @@ import drive from 'drive-db';
 | 2  | Merry     | Johnson  | 19  | Tokyo         |
 | 3  | Peter     | Williams | 45  | London        |
 
-> Heads up! Since 5.0.0, the API has been simplified quite a lot! Also you can now use it in the front-end! 🎉
-
 Becomes an array of objects with the corresponding keys:
 
 ```json
