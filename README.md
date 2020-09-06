@@ -52,7 +52,7 @@ Create the Google Drive spreadsheet and **publish it**:
 
     > [https://docs.google.com/spreadsheets/d/<strong>1fvz34wY6phWDJsuIneqvOoZRPfo6CfJyPg1BYgHt59k</strong>/edit](https://docs.google.com/spreadsheets/d/1fvz34wY6phWDJsuIneqvOoZRPfo6CfJyPg1BYgHt59k/edit)
 
-Now you can either add the CDN <script> or use a bundler. For the CDN:
+Now you can either add the CDN `<script>` or use a bundler. For the CDN:
 
 ```html
 <script src="https://cdn.jsdelivr.net/npm/drive-db"></script>
