@@ -1,5 +1,9 @@
 # drive-db [![npm install drive-db](https://img.shields.io/badge/npm%20install-drive--db-blue.svg)](https://www.npmjs.com/package/drive-db) [![test badge](https://github.com/franciscop/drive-db/workflows/tests/badge.svg)](https://github.com/franciscop/drive-db/blob/master/index.test.js) [![demo](https://img.shields.io/badge/demo-blue.svg)](https://jsfiddle.net/franciscop/1w4t7mc5/)
 
+> NOTICE: **Google has killed Google Sheets API v3 that allowed this library to exist**. So unfortunately this library no longer works. Their new API **does not** provide the same functionality and it doesn't allow you to publish a spreadshit, so we cannot do anything on our end.
+>
+> If you depended on this library for anything important, we are very sorry. The new Sheets v4 does work with you creating a whole backend-frontend OAuth workflow (which is what this library was designed to avoid), so please use other libraries out there that allow for this.
+
 Use Google Drive spreadsheets as a simple database for Node.js and the browser. Perfect for collaboration with multiple people editing the same spreadsheet:
 
 ```js
