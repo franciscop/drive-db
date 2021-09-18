@@ -3,6 +3,8 @@
 > NOTICE: **Google has killed Google Sheets API v3 that allowed this library to exist**. So unfortunately this library no longer works. Their new API **does not** provide the same functionality and it doesn't allow you to publish a spreadshit, so we cannot do anything on our end.
 >
 > If you depended on this library for anything important, we are very sorry. The new Sheets v4 does work with you creating a whole backend-frontend OAuth workflow (which is what this library was designed to avoid), so please use other libraries out there that allow for this.
+>
+> Thank you so much everyone for using this library for as long as you have and the feedback and love sent. It is one of the first and favorite libraries I've ever made, and it has powered all sort of things AFAIK, from blog posts, public charts, Covid19 panels, etc. So it is with a heavy heart that I have to write this notice, deprecating `drive-db`.
 
 Use Google Drive spreadsheets as a simple database for Node.js and the browser. Perfect for collaboration with multiple people editing the same spreadsheet:
 
